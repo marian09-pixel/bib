@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react';
 import type { LearnLang } from '../data/i18n';
+import { langSpeechCode } from '../data/i18n';
 
 let voicesCache: SpeechSynthesisVoice[] | null = null;
 
@@ -14,11 +15,12 @@ function loadVoices(): SpeechSynthesisVoice[] {
 }
 
 function getVoiceForLang(voices: SpeechSynthesisVoice[], lang: LearnLang): SpeechSynthesisVoice | null {
-  const code = lang === 'ru' ? 'ru' : 'en';
+  const code = langSpeechCode[lang];
+  const prefix = code.split('-')[0];
   return (
-    voices.find((v) => v.lang.startsWith(code)) ||
-    voices.find((v) => new RegExp(code, 'i').test(v.lang)) ||
-    voices.find((v) => new RegExp(lang === 'ru' ? 'russian' : 'english', 'i').test(v.name)) ||
+    voices.find((v) => v.lang === code) ||
+    voices.find((v) => v.lang.startsWith(prefix)) ||
+    voices.find((v) => new RegExp(prefix, 'i').test(v.lang)) ||
     null
   );
 }
@@ -38,11 +40,11 @@ export function useSpeech(lang: LearnLang = 'ru') {
     const voice = getVoiceForLang(voices, lang);
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang === 'ru' ? 'ru-RU' : 'en-US';
+    utterance.lang = langSpeechCode[lang];
     if (voice) {
       utterance.voice = voice;
     }
-    utterance.rate = 0.85;
+    utterance.rate = lang === 'ja' || lang === 'zh' ? 0.75 : 0.85;
     utterance.pitch = 1;
     utterance.volume = 1;
 

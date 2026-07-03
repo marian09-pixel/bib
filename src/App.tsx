@@ -2,13 +2,18 @@ import { useState, useCallback, useEffect } from 'react';
 import { Trophy, Star, RotateCcw, Home, ChevronRight, Zap, Heart, Clock, Languages } from 'lucide-react';
 import { levels as levelsRu } from './data/vocabulary';
 import { levelsEn } from './data/vocabularyEn';
-import { ui, type LearnLang } from './data/i18n';
+import { ui, type LearnLang, langFlag } from './data/i18n';
 import { getLesson } from './data/lessons';
+import { getAsianData, isAsianLang } from './data/asianLanguages';
 import GameBoard from './components/GameBoard';
 import LevelSelect from './components/LevelSelect';
 import WelcomePage from './components/WelcomePage';
 import LessonView from './components/LessonView';
+import AsianLanguagePanel from './components/AsianLanguagePanel';
+import FoxMascot from './components/FoxMascot';
 import { useSpeech, initVoices } from './hooks/useSpeech';
+
+const ALL_LANGS: LearnLang[] = ['ru', 'en', 'ja', 'zh', 'ko'];
 
 type View = 'menu' | 'playing' | 'levelComplete' | 'lesson';
 
@@ -34,7 +39,7 @@ export default function App() {
   const [learnLang, setLearnLang] = useState<LearnLang | null>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved === 'ru' || saved === 'en' ? saved : null;
+      return ALL_LANGS.includes(saved as LearnLang) ? (saved as LearnLang) : null;
     } catch {
       return null;
     }
@@ -57,6 +62,8 @@ export default function App() {
   const [elapsedTime, setElapsedTime] = useState(0);
 
   const t = learnLang ? ui[learnLang] : ui.ru;
+  const isAsian = learnLang ? isAsianLang(learnLang) : false;
+  const asianData = learnLang ? getAsianData(learnLang) : null;
   const levels = learnLang === 'en' ? levelsEn : levelsRu;
   const currentLevelData = levels.find(l => l.id === gameState.currentLevel);
 
@@ -169,6 +176,50 @@ export default function App() {
 
   if (!learnLang) {
     return <WelcomePage onSelect={handleLangSelect} />;
+  }
+
+  // Asian languages get their own panel
+  if (isAsian && asianData) {
+    return (
+      <div className="min-h-screen bg-slate-50 text-slate-800">
+        <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
+          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
+                <Star className="w-4 h-4 text-white" />
+              </div>
+              <h1 className="text-lg font-bold text-slate-800">{t.appTitle}</h1>
+              <span className="text-xl">{langFlag[learnLang]}</span>
+            </div>
+            <button
+              onClick={handleBackToWelcome}
+              className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer"
+              title={t.changeLang}
+            >
+              <Languages className="w-4 h-4 text-slate-600" />
+            </button>
+          </div>
+        </header>
+        <main className="max-w-4xl mx-auto px-4 py-6 md:py-8">
+          <AsianLanguagePanel
+            data={asianData}
+            lang={learnLang}
+            onHome={handleBackToWelcome}
+            lettersLabel={t.letters}
+            greetingsLabel={t.greetings}
+            matchLetterLabel={t.matchLetter}
+            matchLetterDesc={t.matchLetterDesc}
+            listenLabel={t.listen}
+            showMoreLabel={t.showMore}
+            showLessLabel={t.showLess}
+          />
+        </main>
+        <footer className="max-w-4xl mx-auto px-4 py-4 text-center text-xs text-slate-400">
+          <p>{t.footer}</p>
+        </footer>
+        <FoxMascot lang={learnLang} message="مرحباً! أنا ثعلبك الذكي. تعال نتعلم معاً!" />
+      </div>
+    );
   }
 
   const totalStars = gameState.completedLevels.size;
@@ -408,6 +459,9 @@ export default function App() {
       <footer className="max-w-4xl mx-auto px-4 py-4 text-center text-xs text-slate-400">
         <p>{t.footer}</p>
       </footer>
+
+      {/* Fox Mascot */}
+      <FoxMascot lang={learnLang} message="مرحباً! أنا ثعلبك الذكي 🦊 تعال نتعلم معاً!" />
     </div>
   );
 }
