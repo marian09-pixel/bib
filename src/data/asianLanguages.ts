@@ -1,4 +1,6 @@
 import type { LearnLang } from './i18n';
+import { levels as levelsRu, type Level } from './vocabulary';
+import { levelsEn } from './vocabularyEn';
 
 export interface AsianPair {
   id: string;
@@ -700,10 +702,41 @@ export const koreanData: AsianLanguageData = {
   ],
 };
 
+const UNIT_ICONS: Record<string, string> = {
+  basics: '👋', numbers: '🔢', family: '👨‍👩‍👧', food: '🍽️', colors: '🎨',
+  common: '📝', sentences: '💬', pronouns: '👤', verbs: '⚡', tenses: '⏰',
+  grammar: '📖', 'sentence-building': '🏗️',
+};
+
+function convertLevelToUnit(level: Level): AsianUnit {
+  return {
+    id: level.id,
+    title: level.name,
+    subtitle: level.nameRu,
+    icon: UNIT_ICONS[level.id] || '📚',
+    pairs: level.pairs.map((p) => ({
+      id: p.id,
+      char: p.russian,
+      roman: p.transliteration,
+      arabic: p.arabic,
+      category: p.category,
+    })),
+  };
+}
+
+function convertLevelsToData(lang: LearnLang, levels: Level[]): AsianLanguageData {
+  return {
+    lang,
+    units: levels.map(convertLevelToUnit),
+  };
+}
+
 export function getAsianData(lang: LearnLang): AsianLanguageData | null {
   if (lang === 'ja') return japaneseData;
   if (lang === 'zh') return chineseData;
   if (lang === 'ko') return koreanData;
+  if (lang === 'ru') return convertLevelsToData('ru', levelsRu);
+  if (lang === 'en') return convertLevelsToData('en', levelsEn);
   return null;
 }
 
