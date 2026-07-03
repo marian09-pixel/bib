@@ -205,10 +205,6 @@ export default function App() {
             data={asianData}
             lang={learnLang}
             onHome={handleBackToWelcome}
-            lettersLabel={t.letters}
-            greetingsLabel={t.greetings}
-            matchLetterLabel={t.matchLetter}
-            matchLetterDesc={t.matchLetterDesc}
             listenLabel={t.listen}
             showMoreLabel={t.showMore}
             showLessLabel={t.showLess}

@@ -8,41 +8,66 @@ interface FoxMascotProps {
 
 export default function FoxMascot({ lang, message, className = '' }: FoxMascotProps) {
   return (
-    <div className={`fixed bottom-4 left-4 z-30 flex items-end gap-2 pointer-events-none ${className}`}>
+    <div className={`fixed bottom-2 left-2 z-30 flex items-end gap-2 pointer-events-none ${className}`}>
       {message && (
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 px-3 py-2 max-w-[180px] mb-1 animate-[fadeIn_0.3s_ease-out] pointer-events-auto">
+        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 px-3 py-2 max-w-[200px] mb-2 animate-[fadeIn_0.3s_ease-out] pointer-events-auto">
           <p className="text-xs text-slate-600 leading-relaxed">{message}</p>
+          <div className="absolute bottom-3 -right-1.5 w-3 h-3 bg-white border-r border-b border-slate-200 rotate-[-45deg]" />
         </div>
       )}
-      <div className="relative w-16 h-16 md:w-20 md:h-20 pointer-events-auto">
-        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-          {/* Fox body color */}
+      <div className="relative pointer-events-auto" style={{ width: '110px', height: '150px' }}>
+        <svg viewBox="0 0 120 170" className="w-full h-full drop-shadow-lg">
+          {/* ===== TAIL ===== */}
+          <path d="M95 110 Q115 100 112 80 Q108 75 102 78 Q100 90 92 100 Z" fill="#E07A3E" />
+          <path d="M100 105 Q112 95 108 82 Q106 80 103 82 Q102 92 96 102 Z" fill="#F5E6D3" />
+
+          {/* ===== BODY ===== */}
+          <ellipse cx="60" cy="120" rx="28" ry="32" fill="#E8843C" />
+          {/* Belly */}
+          <ellipse cx="60" cy="125" rx="18" ry="22" fill="#FFF5EB" />
+
+          {/* ===== ARMS ===== */}
+          <ellipse cx="36" cy="115" rx="7" ry="14" fill="#E07A3E" transform="rotate(-15 36 115)" />
+          <ellipse cx="84" cy="115" rx="7" ry="14" fill="#E07A3E" transform="rotate(15 84 115)" />
+          {/* Paws */}
+          <circle cx="33" cy="126" r="5" fill="#F5E6D3" />
+          <circle cx="87" cy="126" r="5" fill="#F5E6D3" />
+
+          {/* ===== LEGS ===== */}
+          <ellipse cx="48" cy="152" rx="8" ry="10" fill="#E07A3E" />
+          <ellipse cx="72" cy="152" rx="8" ry="10" fill="#E07A3E" />
+          <ellipse cx="48" cy="160" rx="7" ry="5" fill="#2D2D2D" />
+          <ellipse cx="72" cy="160" rx="7" ry="5" fill="#2D2D2D" />
+
+          {/* ===== HEAD ===== */}
           {/* Ears */}
-          <path d="M25 28 L20 10 L35 22 Z" fill="#E07A3E" />
-          <path d="M75 28 L80 10 L65 22 Z" fill="#E07A3E" />
-          <path d="M27 25 L24 15 L32 22 Z" fill="#F5E6D3" />
-          <path d="M73 25 L76 15 L68 22 Z" fill="#F5E6D3" />
+          <path d="M28 48 L22 22 L40 40 Z" fill="#E07A3E" />
+          <path d="M92 48 L98 22 L80 40 Z" fill="#E07A3E" />
+          <path d="M30 45 L27 30 L36 40 Z" fill="#F5E6D3" />
+          <path d="M90 45 L93 30 L84 40 Z" fill="#F5E6D3" />
 
-          {/* Head */}
-          <ellipse cx="50" cy="48" rx="28" ry="26" fill="#E8843C" />
-
+          {/* Head shape */}
+          <ellipse cx="60" cy="62" rx="32" ry="30" fill="#E8843C" />
           {/* Face white area */}
-          <path d="M50 42 Q35 50 32 62 Q40 70 50 68 Q60 70 68 62 Q65 50 50 42 Z" fill="#FFF5EB" />
+          <path d="M60 55 Q42 65 38 80 Q48 90 60 88 Q72 90 82 80 Q78 65 60 55 Z" fill="#FFF5EB" />
 
           {/* Eyes */}
-          <ellipse cx="38" cy="46" rx="3.5" ry="4" fill="#2D2D2D" />
-          <ellipse cx="62" cy="46" rx="3.5" ry="4" fill="#2D2D2D" />
-          <circle cx="39" cy="45" r="1.2" fill="white" />
-          <circle cx="63" cy="45" r="1.2" fill="white" />
+          <ellipse cx="46" cy="60" rx="4" ry="5" fill="#2D2D2D" />
+          <ellipse cx="74" cy="60" rx="4" ry="5" fill="#2D2D2D" />
+          <circle cx="47.5" cy="58.5" r="1.5" fill="white" />
+          <circle cx="75.5" cy="58.5" r="1.5" fill="white" />
 
           {/* Nose */}
-          <ellipse cx="50" cy="55" rx="2.5" ry="2" fill="#2D2D2D" />
-
+          <ellipse cx="60" cy="72" rx="3" ry="2.5" fill="#2D2D2D" />
           {/* Mouth */}
-          <path d="M50 57 Q50 62 46 63" stroke="#2D2D2D" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-          <path d="M50 57 Q50 62 54 63" stroke="#2D2D2D" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+          <path d="M60 75 Q60 80 55 81" stroke="#2D2D2D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+          <path d="M60 75 Q60 80 65 81" stroke="#2D2D2D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
 
-          {/* Costume overlay */}
+          {/* Blush */}
+          <circle cx="40" cy="70" r="3" fill="#FF9999" opacity="0.4" />
+          <circle cx="80" cy="70" r="3" fill="#FF9999" opacity="0.4" />
+
+          {/* ===== COSTUME OVERLAY ===== */}
           {lang === 'ru' && <Ushanka />}
           {lang === 'en' && <TopHat />}
           {lang === 'ja' && <Hachimaki />}
@@ -52,7 +77,7 @@ export default function FoxMascot({ lang, message, className = '' }: FoxMascotPr
 
         {/* Noodle bowl for Korean */}
         {lang === 'ko' && (
-          <div className="absolute -right-2 -bottom-1 text-xl select-none" style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.2))' }}>
+          <div className="absolute -right-1 bottom-2 text-2xl select-none" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))' }}>
             🍜
           </div>
         )}
@@ -61,83 +86,136 @@ export default function FoxMascot({ lang, message, className = '' }: FoxMascotPr
   );
 }
 
-// Ushanka hat (Russian)
+// ===== Ushanka (Russian fur hat) =====
 function Ushanka() {
   return (
     <g>
       {/* Side flaps */}
-      <ellipse cx="22" cy="35" rx="8" ry="12" fill="#3A2A1A" />
-      <ellipse cx="78" cy="35" rx="8" ry="12" fill="#3A2A1A" />
-      {/* Top */}
-      <path d="M28 28 Q50 12 72 28 L72 32 Q50 22 28 32 Z" fill="#4A3520" />
-      <path d="M30 30 Q50 16 70 30 L70 33 Q50 25 30 33 Z" fill="#5A4530" />
-      {/* Star */}
-      <circle cx="50" cy="24" r="3" fill="#D4252E" />
+      <ellipse cx="26" cy="50" rx="9" ry="14" fill="#3A2A1A" />
+      <ellipse cx="94" cy="50" rx="9" ry="14" fill="#3A2A1A" />
+      {/* Fur texture dots */}
+      <circle cx="24" cy="45" r="1" fill="#5A4530" />
+      <circle cx="28" cy="48" r="1" fill="#5A4530" />
+      <circle cx="92" cy="45" r="1" fill="#5A4530" />
+      <circle cx="96" cy="48" r="1" fill="#5A4530" />
+      {/* Top dome */}
+      <path d="M32 42 Q60 22 88 42 L88 48 Q60 30 32 48 Z" fill="#4A3520" />
+      <path d="M34 44 Q60 26 86 44 L86 49 Q60 32 34 49 Z" fill="#5A4530" />
+      {/* Red star */}
+      <circle cx="60" cy="36" r="4" fill="#D4252E" />
+      <path d="M60 33 L61 36 L64 36 L61.5 38 L62.5 41 L60 39 L57.5 41 L58.5 38 L56 36 L59 36 Z" fill="#FFD700" />
     </g>
   );
 }
 
-// Top Hat (English gentleman)
+// ===== Top Hat (English gentleman) =====
 function TopHat() {
   return (
     <g>
-      {/* Hat brim */}
-      <ellipse cx="50" cy="26" rx="24" ry="4" fill="#1A1A1A" />
+      {/* Brim */}
+      <ellipse cx="60" cy="40" rx="30" ry="5" fill="#1A1A1A" />
+      <ellipse cx="60" cy="40" rx="30" ry="3" fill="#2A2A2A" />
       {/* Hat body */}
-      <rect x="34" y="8" width="32" height="20" rx="2" fill="#1A1A1A" />
-      {/* Band */}
-      <rect x="34" y="22" width="32" height="4" fill="#8B0000" />
+      <rect x="40" y="14" width="40" height="28" rx="3" fill="#1A1A1A" />
+      <rect x="40" y="14" width="40" height="28" rx="3" fill="url(#hatShine)" opacity="0.3" />
+      {/* Red band */}
+      <rect x="40" y="34" width="40" height="5" fill="#8B0000" />
+      <rect x="40" y="36" width="40" height="1" fill="#D4252E" opacity="0.5" />
       {/* Shine */}
-      <rect x="38" y="10" width="3" height="14" rx="1" fill="#3A3A3A" />
+      <rect x="44" y="16" width="3" height="20" rx="1.5" fill="#3A3A3A" />
+      {/* Monocle */}
+      <circle cx="76" cy="62" r="6" fill="none" stroke="#C0A050" strokeWidth="1.5" />
+      <circle cx="76" cy="62" r="5" fill="none" stroke="#E0C070" strokeWidth="0.5" />
+      <line x1="70" y1="66" x2="64" y2="72" stroke="#C0A050" strokeWidth="0.8" />
+      <defs>
+        <linearGradient id="hatShine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#444" />
+          <stop offset="50%" stopColor="#666" />
+          <stop offset="100%" stopColor="#222" />
+        </linearGradient>
+      </defs>
     </g>
   );
 }
 
-// Hachimaki headband (Japanese ninja)
+// ===== Hachimaki (Japanese headband) =====
 function Hachimaki() {
   return (
     <g>
-      <rect x="22" y="30" width="56" height="8" fill="#D4252E" />
-      <rect x="22" y="30" width="56" height="2" fill="#F5E6D3" opacity="0.3" />
+      {/* Main band */}
+      <rect x="26" y="46" width="68" height="9" fill="#D4252E" />
+      <rect x="26" y="46" width="68" height="2" fill="#F5E6D3" opacity="0.3" />
+      <rect x="26" y="53" width="68" height="2" fill="#8B0000" opacity="0.3" />
       {/* Rising sun circle */}
-      <circle cx="50" cy="34" r="3.5" fill="white" />
-      <circle cx="50" cy="34" r="2" fill="#D4252E" />
-      {/* Knot tails */}
-      <path d="M78 33 L86 30 L84 38 Z" fill="#D4252E" />
-      <path d="M22 33 L14 30 L16 38 Z" fill="#D4252E" />
+      <circle cx="60" cy="50.5" r="4" fill="white" />
+      <circle cx="60" cy="50.5" r="2.5" fill="#D4252E" />
+      {/* Knot tails right */}
+      <path d="M94 49 L104 45 L102 52 L100 50 L104 55 Z" fill="#D4252E" />
+      <path d="M94 51 L106 53 L100 56 Z" fill="#B22222" />
+      {/* Knot tails left */}
+      <path d="M26 49 L16 45 L18 52 L20 50 L16 55 Z" fill="#D4252E" />
+      <path d="M26 51 L14 53 L20 56 Z" fill="#B22222" />
     </g>
   );
 }
 
-// Chinese traditional round hat
+// ===== Chinese traditional round hat =====
 function ChineseHat() {
   return (
     <g>
-      {/* Hat brim */}
-      <ellipse cx="50" cy="28" rx="26" ry="5" fill="#2A4A3A" />
+      {/* Wide brim */}
+      <ellipse cx="60" cy="44" rx="34" ry="6" fill="#2A4A3A" />
+      <ellipse cx="60" cy="44" rx="34" ry="4" fill="#3A6A4A" />
       {/* Dome */}
-      <path d="M28 28 Q50 6 72 28 Z" fill="#3A6A4A" />
-      <path d="M30 28 Q50 10 70 28 Z" fill="#4A7A5A" />
+      <path d="M30 44 Q60 14 90 44 Z" fill="#3A6A4A" />
+      <path d="M32 44 Q60 18 88 44 Z" fill="#4A7A5A" />
+      <path d="M35 44 Q60 22 85 44 Z" fill="#5A8A6A" opacity="0.5" />
       {/* Red button on top */}
-      <circle cx="50" cy="10" r="2.5" fill="#D4252E" />
-      {/* Gold trim */}
-      <ellipse cx="50" cy="28" rx="26" ry="2" fill="#D4A843" opacity="0.6" />
+      <circle cx="60" cy="18" r="3" fill="#D4252E" />
+      <circle cx="60" cy="18" r="1.5" fill="#FF4444" />
+      {/* Gold trim on brim */}
+      <ellipse cx="60" cy="44" rx="34" ry="1.5" fill="#D4A843" opacity="0.7" />
+      {/* Tassel */}
+      <path d="M60 18 Q62 22 60 26" stroke="#D4A843" strokeWidth="1" fill="none" />
+      <circle cx="60" cy="27" r="1.5" fill="#D4A843" />
     </g>
   );
 }
 
-// Hanbok (Korean traditional)
+// ===== Hanbok (Korean traditional outfit) =====
 function Hanbok() {
   return (
     <g>
       {/* Headband */}
-      <rect x="24" y="30" width="52" height="5" fill="#C8332E" />
-      <rect x="24" y="30" width="52" height="1.5" fill="#E8D5B8" opacity="0.4" />
-      {/* Hanbok collar (visible at bottom of face) */}
-      <path d="M35 68 Q50 72 65 68 L68 74 Q50 78 32 74 Z" fill="#2A5A8A" />
-      <path d="M38 70 Q50 73 62 70 L64 75 Q50 77 36 75 Z" fill="#3A6A9A" />
-      {/* Bow */}
-      <circle cx="50" cy="73" r="2" fill="#F5D040" />
+      <rect x="28" y="46" width="64" height="6" fill="#C8332E" />
+      <rect x="28" y="46" width="64" height="1.5" fill="#E8D5B8" opacity="0.4" />
+      <rect x="28" y="50.5" width="64" height="1.5" fill="#8B0000" opacity="0.3" />
+
+      {/* Hanbok top (jeogori) - covers upper body */}
+      <path d="M32 92 Q28 95 30 110 L34 130 Q60 135 86 130 L90 110 Q92 95 88 92 Q60 88 32 92 Z" fill="#2A5A8A" />
+      <path d="M34 94 Q32 98 34 110 L37 128 Q60 132 83 128 L86 110 Q88 98 86 94 Q60 90 34 94 Z" fill="#3A6A9A" />
+
+      {/* Collar strip (white) */}
+      <path d="M48 92 L52 100 L60 102 L68 100 L72 92 Q60 90 48 92 Z" fill="#F5E6D3" />
+      <path d="M50 94 L53 100 L60 101 L67 100 L70 94 Q60 92 50 94 Z" fill="#FFF5EB" />
+
+      {/* Bow (gorum) */}
+      <path d="M55 100 Q50 96 48 100 Q50 104 55 102 Z" fill="#F5D040" />
+      <path d="M65 100 Q70 96 72 100 Q70 104 65 102 Z" fill="#F5D040" />
+      <rect x="58" y="99" width="4" height="4" rx="1" fill="#E8B830" />
+
+      {/* Belt */}
+      <rect x="34" y="128" width="52" height="4" fill="#1A4A7A" />
+      <rect x="34" y="128" width="52" height="1" fill="#3A6AAA" opacity="0.5" />
+
+      {/* Skirt lower portion */}
+      <path d="M34 132 L30 160 L90 160 L86 132 Q60 136 34 132 Z" fill="#1A4A7A" />
+      <path d="M36 134 L33 158 L87 158 L84 134 Q60 138 36 134 Z" fill="#2A5A8A" />
+
+      {/* Decorative gold pattern on skirt */}
+      <circle cx="50" cy="145" r="1.5" fill="#D4A843" opacity="0.6" />
+      <circle cx="60" cy="148" r="1.5" fill="#D4A843" opacity="0.6" />
+      <circle cx="70" cy="145" r="1.5" fill="#D4A843" opacity="0.6" />
     </g>
   );
 }
