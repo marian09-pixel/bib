@@ -1,4 +1,5 @@
-export type LearnLang = 'ru' | 'en' | 'ja' | 'zh' | 'ko' | 'fr';
+export type LearnLang = 'ru' | 'en' | 'ja' | 'zh' | 'ko' | 'fr' | 'es';
+export type NativeLang = 'ar' | 'fr' | 'en';
 
 export interface UIStrings {
   appTitle: string;
@@ -36,15 +37,16 @@ export interface UIStrings {
   chinese: string;
   korean: string;
   french: string;
+  spanish: string;
   russianDesc: string;
   englishDesc: string;
   japaneseDesc: string;
   chineseDesc: string;
   koreanDesc: string;
   frenchDesc: string;
+  spanishDesc: string;
   start: string;
   targetLangName: string;
-  // Asian panel strings
   letters: string;
   lettersDesc: string;
   greetings: string;
@@ -54,145 +56,203 @@ export interface UIStrings {
   listen: string;
   showMore: string;
   showLess: string;
+  browse: string;
+  game: string;
+  practice: string;
+  whatMeaning: string;
+  practiceDone: string;
+  correct: string;
+  retry2: string;
+  back: string;
+  score: string;
+  newRecord: string;
+  bestTime: string;
+  fontSize: string;
+  small: string;
+  medium: string;
+  large: string;
+  displaySettings: string;
+  nativeLangTitle: string;
+  nativeLangDesc: string;
+  arabic: string;
+  languagesCount: string;
 }
 
-const baseStrings: Omit<UIStrings, 'appTitle' | 'matchDesc' | 'footer' | 'targetLangName' | 'russianDesc' | 'englishDesc' | 'japaneseDesc' | 'chineseDesc' | 'koreanDesc' | 'frenchDesc'> = {
-  appSubtitle: 'لعبة المطابقة',
-  matchGame: 'لعبة المطابقة',
-  levels: 'مستويات',
-  bestStreak: 'أفضل تتابع',
-  home: 'القائمة',
-  restart: 'إعادة',
-  matches: 'مطابقة',
-  outOfTries: 'انتهت المحاولات!',
-  retry: 'إعادة المحاولة',
-  menu: 'القائمة',
-  streak: 'تتابع',
-  bonus: 'مكافأة',
-  levelScore: 'نقاط المستوى',
-  wellDone: 'أحسنت!',
-  completedLevel: (name) => `أكملت مستوى ${name}`,
-  points: 'النقاط',
-  time: 'الوقت',
-  bestStreakLabel: 'أفضل تتابع',
-  mistakes: 'الأخطاء',
-  nextLevel: (name) => `المستوى التالي: ${name}`,
-  backToMenu: 'العودة للقائمة',
-  wordsCount: (n) => `${n} كلمات`,
-  changeLang: 'تغيير اللغة',
-  welcome: 'مرحباً بك',
-  chooseLang: 'اختر لغتك المفضلة للتعلم',
+function makeStrings(s: Partial<UIStrings> & {
+  appTitle: string; matchDesc: (l: string) => string; footer: string; targetLangName: string;
+  russianDesc: string; englishDesc: string; japaneseDesc: string; chineseDesc: string;
+  koreanDesc: string; frenchDesc: string; spanishDesc: string;
+}): UIStrings {
+  return { ...s } as UIStrings;
+}
+
+// ===== Arabic UI (default) =====
+const arStrings: UIStrings = {
+  appTitle: '', appSubtitle: 'لعبة المطابقة', matchGame: 'لعبة المطابقة',
+  matchDesc: () => '', levels: 'مستويات', bestStreak: 'أفضل تتابع',
+  home: 'القائمة', restart: 'إعادة', matches: 'مطابقة', outOfTries: 'انتهت المحاولات!',
+  retry: 'إعادة المحاولة', menu: 'القائمة', streak: 'تتابع', bonus: 'مكافأة',
+  levelScore: 'نقاط المستوى', wellDone: 'أحسنت!',
+  completedLevel: (name) => `أكملت مستوى ${name}`, points: 'النقاط', time: 'الوقت',
+  bestStreakLabel: 'أفضل تتابع', mistakes: 'الأخطاء',
+  nextLevel: (name) => `المستوى التالي: ${name}`, backToMenu: 'العودة للقائمة',
+  footer: '', wordsCount: (n) => `${n} كلمات`, changeLang: 'تغيير اللغة',
+  welcome: 'مرحباً بك', chooseLang: 'اختر لغتك المفضلة للتعلم',
   chooseLangDesc: 'ابدأ رحلتك في تعلم لغة جديدة',
-  russian: 'اللغة الروسية',
-  english: 'اللغة الإنجليزية',
-  japanese: 'اللغة اليابانية',
-  chinese: 'اللغة الصينية',
-  korean: 'اللغة الكورية',
-  french: 'اللغة الفرنسية',
-  frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
-  start: 'ابدأ التعلم',
-  letters: 'الحروف الأساسية',
-  lettersDesc: 'تعلّم الحروف بالنطق واللعب',
-  greetings: 'التحية والجمل اليومية',
-  greetingsDesc: 'كلمات شائعة مترجمة للعربية',
-  matchLetter: 'لعبة مطابقة الحروف',
-  matchLetterDesc: 'اربط الحرف بنطقه العربي',
-  listen: 'استمع',
-  showMore: 'عرض المزيد',
-  showLess: 'عرض أقل',
+  russian: 'اللغة الروسية', english: 'اللغة الإنجليزية', japanese: 'اللغة اليابانية',
+  chinese: 'اللغة الصينية', korean: 'اللغة الكورية', french: 'اللغة الفرنسية',
+  spanish: 'اللغة الإسبانية',
+  russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة', englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
+  japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة', chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
+  koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة', frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
+  spanishDesc: 'تعلم الإسبانية بطريقة تفاعلية ممتعة',
+  start: 'ابدأ التعلم', targetLangName: '',
+  letters: 'الحروف الأساسية', lettersDesc: 'تعلّم الحروف بالنطق واللعب',
+  greetings: 'التحية والجمل اليومية', greetingsDesc: 'كلمات شائعة مترجمة للعربية',
+  matchLetter: 'لعبة مطابقة الحروف', matchLetterDesc: 'اربط الحرف بنطقه العربي',
+  listen: 'استمع', showMore: 'عرض المزيد', showLess: 'عرض أقل',
+  browse: 'تصفح', game: 'لعبة', practice: 'تمرين',
+  whatMeaning: 'ما معنى هذه الكلمة؟', practiceDone: 'انتهى التمرين!',
+  correct: 'صحيح', retry2: 'إعادة', back: 'رجوع', score: 'النقاط',
+  newRecord: 'رقم قياسي جديد!', bestTime: 'أفضل وقت',
+  fontSize: 'حجم الخط', small: 'صغير', medium: 'متوسط', large: 'كبير',
+  displaySettings: 'إعدادات العرض',
+  nativeLangTitle: 'اختر لغتك الأم', nativeLangDesc: 'اختر اللغة التي تريد عرض التطبيق بها',
+  arabic: 'العربية', languagesCount: '7 لغات',
 };
 
+// ===== French UI =====
+const frStrings: UIStrings = {
+  ...arStrings,
+  appSubtitle: 'Jeu de correspondance', matchGame: 'Jeu de correspondance',
+  levels: 'Niveaux', bestStreak: 'Meilleure série', home: 'Menu', restart: 'Recommencer',
+  matches: 'correspondance', outOfTries: 'Tentatives épuisées!', retry: 'Réessayer',
+  menu: 'Menu', streak: 'série', bonus: 'bonus', levelScore: 'Score du niveau',
+  wellDone: 'Bravo!', completedLevel: (name) => `Niveau ${name} terminé`,
+  points: 'Points', time: 'Temps', bestStreakLabel: 'Meilleure série', mistakes: 'Erreurs',
+  nextLevel: (name) => `Niveau suivant: ${name}`, backToMenu: 'Retour au menu',
+  wordsCount: (n) => `${n} mots`, changeLang: 'Changer de langue',
+  welcome: 'Bienvenue', chooseLang: 'Choisissez la langue à apprendre',
+  chooseLangDesc: 'Commencez votre voyage d\'apprentissage',
+  russian: 'Russe', english: 'Anglais', japanese: 'Japonais', chinese: 'Chinois',
+  korean: 'Coréen', french: 'Français', spanish: 'Espagnol',
+  russianDesc: 'Apprenez le russe de manière interactive', englishDesc: 'Apprenez l\'anglais de manière interactive',
+  japaneseDesc: 'Apprenez le japonais de manière interactive', chineseDesc: 'Apprenez le chinois de manière interactive',
+  koreanDesc: 'Apprenez le coréen de manière interactive', frenchDesc: 'Apprenez le français de manière interactive',
+  spanishDesc: 'Apprenez l\'espagnol de manière interactive',
+  start: 'Commencer', targetLangName: '',
+  letters: 'Lettres de base', lettersDesc: 'Apprenez les lettres avec le son',
+  greetings: 'Salutations', greetingsDesc: 'Phrases courantes traduites',
+  matchLetter: 'Jeu de correspondance', matchLetterDesc: 'Associez les lettres',
+  listen: 'Écouter', showMore: 'Voir plus', showLess: 'Voir moins',
+  browse: 'Parcourir', game: 'Jeu', practice: 'Exercice',
+  whatMeaning: 'Que veut dire ce mot?', practiceDone: 'Exercice terminé!',
+  correct: 'correct', retry2: 'Recommencer', back: 'Retour', score: 'Score',
+  newRecord: 'Nouveau record!', bestTime: 'Meilleur temps',
+  fontSize: 'Taille du texte', small: 'Petit', medium: 'Moyen', large: 'Grand',
+  displaySettings: 'Paramètres d\'affichage',
+  nativeLangTitle: 'Choisissez votre langue', nativeLangDesc: 'Choisissez la langue de l\'interface',
+  arabic: 'Arabe', languagesCount: '7 langues',
+};
+
+// ===== English UI =====
+const enStrings: UIStrings = {
+  ...arStrings,
+  appSubtitle: 'Matching Game', matchGame: 'Matching Game',
+  levels: 'Levels', bestStreak: 'Best Streak', home: 'Menu', restart: 'Restart',
+  matches: 'matches', outOfTries: 'Out of tries!', retry: 'Try again',
+  menu: 'Menu', streak: 'streak', bonus: 'bonus', levelScore: 'Level Score',
+  wellDone: 'Well done!', completedLevel: (name) => `Completed ${name}`,
+  points: 'Points', time: 'Time', bestStreakLabel: 'Best Streak', mistakes: 'Mistakes',
+  nextLevel: (name) => `Next: ${name}`, backToMenu: 'Back to menu',
+  wordsCount: (n) => `${n} words`, changeLang: 'Change language',
+  welcome: 'Welcome', chooseLang: 'Choose a language to learn',
+  chooseLangDesc: 'Start your language learning journey',
+  russian: 'Russian', english: 'English', japanese: 'Japanese', chinese: 'Chinese',
+  korean: 'Korean', french: 'French', spanish: 'Spanish',
+  russianDesc: 'Learn Russian interactively', englishDesc: 'Learn English interactively',
+  japaneseDesc: 'Learn Japanese interactively', chineseDesc: 'Learn Chinese interactively',
+  koreanDesc: 'Learn Korean interactively', frenchDesc: 'Learn French interactively',
+  spanishDesc: 'Learn Spanish interactively',
+  start: 'Start learning', targetLangName: '',
+  letters: 'Basic Letters', lettersDesc: 'Learn letters with sound',
+  greetings: 'Greetings', greetingsDesc: 'Common phrases translated',
+  matchLetter: 'Letter Matching', matchLetterDesc: 'Match letters to sounds',
+  listen: 'Listen', showMore: 'Show more', showLess: 'Show less',
+  browse: 'Browse', game: 'Game', practice: 'Practice',
+  whatMeaning: 'What does this word mean?', practiceDone: 'Practice complete!',
+  correct: 'correct', retry2: 'Retry', back: 'Back', score: 'Score',
+  newRecord: 'New record!', bestTime: 'Best time',
+  fontSize: 'Font size', small: 'Small', medium: 'Medium', large: 'Large',
+  displaySettings: 'Display settings',
+  nativeLangTitle: 'Choose your native language', nativeLangDesc: 'Select the interface language',
+  arabic: 'Arabic', languagesCount: '7 languages',
+};
+
+export const nativeUi: Record<NativeLang, UIStrings> = {
+  ar: arStrings,
+  fr: frStrings,
+  en: enStrings,
+};
+
+export const nativeLangFlag: Record<NativeLang, string> = {
+  ar: '🇩🇿',
+  fr: '🇫🇷',
+  en: '🇬🇧',
+};
+
+export const nativeLangLabel: Record<NativeLang, string> = {
+  ar: 'العربية',
+  fr: 'Français',
+  en: 'English',
+};
+
+// Per-learn-lang overrides for appTitle, matchDesc, footer, targetLangName
+function learnLangOverrides(lang: LearnLang, native: NativeLang): Pick<UIStrings, 'appTitle' | 'matchDesc' | 'footer' | 'targetLangName'> {
+  const names: Record<LearnLang, { ar: string; fr: string; en: string }> = {
+    ru: { ar: 'تعلم الروسية', fr: 'Apprendre le russe', en: 'Learn Russian' },
+    en: { ar: 'تعلم الإنجليزية', fr: 'Apprendre l\'anglais', en: 'Learn English' },
+    ja: { ar: 'تعلم اليابانية', fr: 'Apprendre le japonais', en: 'Learn Japanese' },
+    zh: { ar: 'تعلم الصينية', fr: 'Apprendre le chinois', en: 'Learn Chinese' },
+    ko: { ar: 'تعلم الكورية', fr: 'Apprendre le coréen', en: 'Learn Korean' },
+    fr: { ar: 'تعلم الفرنسية', fr: 'Apprendre le français', en: 'Learn French' },
+    es: { ar: 'تعلم الإسبانية', fr: 'Apprendre l\'espagnol', en: 'Learn Spanish' },
+  };
+  const n = names[lang][native];
+  const descAr = `اربط الكلمات بمعانيها`;
+  const descFr = `Associez les mots à leurs significations`;
+  const descEn = `Match words to their meanings`;
+  const footerAr = `تعلم اللغة - تمرّن واستمتع`;
+  const footerFr = `Apprenez la langue - entraînez-vous et amusez-vous`;
+  const footerEn = `Learn the language - practice and enjoy`;
+  return {
+    appTitle: n,
+    matchDesc: () => native === 'fr' ? descFr : native === 'en' ? descEn : descAr,
+    footer: native === 'fr' ? footerFr : native === 'en' ? footerEn : footerAr,
+    targetLangName: n,
+  };
+}
+
+export function getUi(lang: LearnLang, native: NativeLang): UIStrings {
+  const base = nativeUi[native];
+  return { ...base, ...learnLangOverrides(lang, native) };
+}
+
+// Legacy export for backward compat (uses Arabic)
 export const ui: Record<LearnLang, UIStrings> = {
-  ru: {
-    ...baseStrings,
-    appTitle: 'تعلم الروسية',
-    matchDesc: () => 'اربط الكلمات العربية بمعانيها الروسية',
-    footer: 'تعلم اللغة الروسية - تمرّن واستمتع',
-    targetLangName: 'الروسية',
-    russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة',
-    englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
-    japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
-    chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
-    koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
-  },
-  en: {
-    ...baseStrings,
-    appTitle: 'تعلم الإنجليزية',
-    matchDesc: () => 'اربط الكلمات العربية بمعانيها الإنجليزية',
-    footer: 'تعلم اللغة الإنجليزية - تمرّن واستمتع',
-    targetLangName: 'الإنجليزية',
-    russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة',
-    englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
-    japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
-    chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
-    koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
-  },
-  ja: {
-    ...baseStrings,
-    appTitle: 'تعلم اليابانية',
-    matchDesc: () => 'اربط الحروف اليابانية بنطقها العربي',
-    footer: 'تعلم اللغة اليابانية - تمرّن واستمتع',
-    targetLangName: 'اليابانية',
-    russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة',
-    englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
-    japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
-    chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
-    koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
-  },
-  zh: {
-    ...baseStrings,
-    appTitle: 'تعلم الصينية',
-    matchDesc: () => 'اربط الحروف الصينية بنطقها العربي',
-    footer: 'تعلم اللغة الصينية - تمرّن واستمتع',
-    targetLangName: 'الصينية',
-    russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة',
-    englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
-    japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
-    chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
-    koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
-  },
-  ko: {
-    ...baseStrings,
-    appTitle: 'تعلم الكورية',
-    matchDesc: () => 'اربط الحروف الكورية بنطقها العربي',
-    footer: 'تعلم اللغة الكورية - تمرّن واستمتع',
-    targetLangName: 'الكورية',
-    russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة',
-    englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
-    japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
-    chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
-    koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
-    frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
-  },
-  fr: {
-    ...baseStrings,
-    appTitle: 'تعلم الفرنسية',
-    matchDesc: () => 'اربط الكلمات العربية بمعانيها الفرنسية',
-    footer: 'تعلم اللغة الفرنسية - تمرّن واستمتع',
-    targetLangName: 'الفرنسية',
-    russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة',
-    englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
-    japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
-    chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
-    koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
-    frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
-  },
+  ru: { ...arStrings, ...learnLangOverrides('ru', 'ar') },
+  en: { ...arStrings, ...learnLangOverrides('en', 'ar') },
+  ja: { ...arStrings, ...learnLangOverrides('ja', 'ar') },
+  zh: { ...arStrings, ...learnLangOverrides('zh', 'ar') },
+  ko: { ...arStrings, ...learnLangOverrides('ko', 'ar') },
+  fr: { ...arStrings, ...learnLangOverrides('fr', 'ar') },
+  es: { ...arStrings, ...learnLangOverrides('es', 'ar') },
 };
 
 export const langFlag: Record<LearnLang, string> = {
-  ru: '🇷🇺',
-  en: '🇬🇧',
-  ja: '🇯🇵',
-  zh: '🇨🇳',
-  ko: '🇰🇷',
-  fr: '🇫🇷',
+  ru: '🇷🇺', en: '🇬🇧', ja: '🇯🇵', zh: '🇨🇳', ko: '🇰🇷', fr: '🇫🇷', es: '🇲🇽',
 };
 
 export const langSpeechCode: Record<LearnLang, string> = {
-  ru: 'ru-RU',
-  en: 'en-US',
-  ja: 'ja-JP',
-  zh: 'zh-CN',
-  ko: 'ko-KR',
-  fr: 'fr-FR',
+  ru: 'ru-RU', en: 'en-US', ja: 'ja-JP', zh: 'zh-CN', ko: 'ko-KR', fr: 'fr-FR', es: 'es-MX',
 };

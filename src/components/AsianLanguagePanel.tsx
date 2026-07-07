@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Home, Volume2, BookOpen, RotateCcw, CheckCircle2, Zap, ChevronRight, Dumbbell, X, Timer, Trophy } from 'lucide-react';
 import type { AsianLanguageData, AsianPair, AsianUnit } from '../data/asianLanguages';
-import type { LearnLang } from '../data/i18n';
+import type { LearnLang, UIStrings } from '../data/i18n';
 import { useSpeech } from '../hooks/useSpeech';
 import { getFontClasses, getBestTime, saveBestTime, type FontSize } from '../hooks/useSettings';
 
@@ -13,6 +13,7 @@ interface AsianLanguagePanelProps {
   showMoreLabel: string;
   showLessLabel: string;
   fontSize: FontSize;
+  uiStrings: UIStrings;
 }
 
 type SubView = 'menu' | 'unit' | 'game' | 'practice';
@@ -27,7 +28,7 @@ interface GameCard {
 }
 
 export default function AsianLanguagePanel({
-  data, lang, onHome, listenLabel, showMoreLabel, showLessLabel, fontSize,
+  data, lang, onHome, listenLabel, showMoreLabel, showLessLabel, fontSize, uiStrings,
 }: AsianLanguagePanelProps) {
   const [subView, setSubView] = useState<SubView>('menu');
   const [activeUnit, setActiveUnit] = useState<AsianUnit | null>(null);
@@ -70,7 +71,7 @@ export default function AsianLanguagePanel({
       </div>
 
       {subView === 'menu' && (
-        <MenuView data={data} onOpenUnit={openUnit} onOpenGame={openGame} onOpenPractice={openPractice} />
+        <MenuView data={data} onOpenUnit={openUnit} onOpenGame={openGame} onOpenPractice={openPractice} uiStrings={uiStrings} />
       )}
 
       {subView === 'unit' && activeUnit && (
@@ -84,6 +85,7 @@ export default function AsianLanguagePanel({
           showLessLabel={showLessLabel}
           onPlayGame={() => openGame(activeUnit)}
           fontSize={fontSize}
+          uiStrings={uiStrings}
         />
       )}
 
@@ -94,6 +96,7 @@ export default function AsianLanguagePanel({
           onSpeak={speak}
           onBack={() => setSubView('menu')}
           fontSize={fontSize}
+          uiStrings={uiStrings}
         />
       )}
 
@@ -103,6 +106,7 @@ export default function AsianLanguagePanel({
           lang={lang}
           onSpeak={speak}
           onBack={() => setSubView('menu')}
+          uiStrings={uiStrings}
         />
       )}
     </div>
@@ -110,11 +114,12 @@ export default function AsianLanguagePanel({
 }
 
 // ===================== MENU =====================
-function MenuView({ data, onOpenUnit, onOpenGame, onOpenPractice }: {
+function MenuView({ data, onOpenUnit, onOpenGame, onOpenPractice, uiStrings }: {
   data: AsianLanguageData;
   onOpenUnit: (u: AsianUnit) => void;
   onOpenGame: (u: AsianUnit) => void;
   onOpenPractice: (u: AsianUnit) => void;
+  uiStrings: UIStrings;
 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
@@ -148,21 +153,21 @@ function MenuView({ data, onOpenUnit, onOpenGame, onOpenPractice }: {
                 className={`flex-1 px-3 py-2 ${c.bg} ${c.text} rounded-lg text-sm font-semibold transition-all hover:opacity-80 cursor-pointer flex items-center justify-center gap-1`}
               >
                 <BookOpen className="w-4 h-4" />
-                <span>تصفح</span>
+                <span>{uiStrings.browse}</span>
               </button>
               <button
                 onClick={() => onOpenGame(unit)}
                 className="flex-1 px-3 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm font-semibold transition-all hover:bg-slate-200 cursor-pointer flex items-center justify-center gap-1"
               >
                 <Zap className="w-4 h-4" />
-                <span>لعبة</span>
+                <span>{uiStrings.game}</span>
               </button>
               <button
                 onClick={() => onOpenPractice(unit)}
                 className="flex-1 px-3 py-2 bg-emerald-100 text-emerald-600 rounded-lg text-sm font-semibold transition-all hover:bg-emerald-200 cursor-pointer flex items-center justify-center gap-1"
               >
                 <Dumbbell className="w-4 h-4" />
-                <span>تمرين</span>
+                <span>{uiStrings.practice}</span>
               </button>
             </div>
             <p className="text-xs text-slate-400 text-center mt-2">{unit.pairs.length} عنصر</p>
@@ -174,7 +179,7 @@ function MenuView({ data, onOpenUnit, onOpenGame, onOpenPractice }: {
 }
 
 // ===================== UNIT VIEW =====================
-function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, showLessLabel, onPlayGame, fontSize }: {
+function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, showLessLabel, onPlayGame, fontSize, uiStrings }: {
   unit: AsianUnit;
   lang: LearnLang;
   onSpeak: (t: string) => void;
@@ -184,6 +189,7 @@ function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, sho
   showLessLabel: string;
   onPlayGame: () => void;
   fontSize: FontSize;
+  uiStrings: UIStrings;
 }) {
   const [expanded, setExpanded] = useState(false);
   const visible = expanded ? unit.pairs : unit.pairs.slice(0, 15);
@@ -199,7 +205,7 @@ function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, sho
           </div>
         </div>
         <button onClick={onBack} className="text-sm text-teal-600 hover:text-teal-700 font-medium cursor-pointer">
-          ← رجوع
+          ← {uiStrings.back}
         </button>
       </div>
 
@@ -226,7 +232,7 @@ function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, sho
           className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-semibold transition-colors flex items-center gap-2 cursor-pointer"
         >
           <Zap className="w-4 h-4" />
-          <span>العب لعبة المطابقة</span>
+          <span>{uiStrings.matchGame}</span>
         </button>
       </div>
     </div>
@@ -259,12 +265,13 @@ function PairCard({ pair, onSpeak, delay, fontSize }: {
 }
 
 // ===================== MATCHING GAME =====================
-function LetterGame({ unit, lang, onSpeak, onBack, fontSize }: {
+function LetterGame({ unit, lang, onSpeak, onBack, fontSize, uiStrings }: {
   unit: AsianUnit;
   lang: LearnLang;
   onSpeak: (t: string) => void;
   onBack: () => void;
   fontSize: FontSize;
+  uiStrings: UIStrings;
 }) {
   const gamePairs = unit.pairs.slice(0, 10);
   const [cards, setCards] = useState<GameCard[]>([]);
@@ -350,7 +357,7 @@ function LetterGame({ unit, lang, onSpeak, onBack, fontSize }: {
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-lg font-bold text-slate-800">لعبة مطابقة: {unit.title}</h2>
+          <h2 className="text-lg font-bold text-slate-800">{uiStrings.matchGame}: {unit.title}</h2>
           <p className="text-xs text-slate-400">اربط الحرف/الكلمة بمعناه العربي</p>
         </div>
         <div className="flex items-center gap-3">
@@ -365,23 +372,23 @@ function LetterGame({ unit, lang, onSpeak, onBack, fontSize }: {
           <button onClick={restart} className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer transition-colors">
             <RotateCcw className="w-4 h-4 text-slate-600" />
           </button>
-          <button onClick={onBack} className="text-sm text-teal-600 hover:text-teal-700 font-medium cursor-pointer">← رجوع</button>
+          <button onClick={onBack} className="text-sm text-teal-600 hover:text-teal-700 font-medium cursor-pointer">← {uiStrings.back}</button>
         </div>
       </div>
 
       {allDone && (
         <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4 text-center">
           <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-1" />
-          <p className="text-emerald-700 font-semibold">أحسنت! أكملت جميع المطابقات</p>
-          <p className="text-sm text-emerald-600 mt-1">النقاط: {score} | الأخطاء: {mistakes} | الوقت: {elapsed} ثانية</p>
+          <p className="text-emerald-700 font-semibold">{uiStrings.wellDone}</p>
+          <p className="text-sm text-emerald-600 mt-1">{uiStrings.points}: {score} | {uiStrings.mistakes}: {mistakes} | {uiStrings.time}: {elapsed}s</p>
           {newRecord && (
             <p className="text-sm text-amber-600 font-bold mt-1 flex items-center justify-center gap-1">
-              <Trophy className="w-4 h-4" /> رقم قياسي جديد!
+              <Trophy className="w-4 h-4" /> {uiStrings.newRecord}
             </p>
           )}
           {bestTime !== null && !newRecord && (
             <p className="text-xs text-slate-500 mt-1 flex items-center justify-center gap-1">
-              <Trophy className="w-3 h-3" /> أفضل وقت: {bestTime} ثانية
+              <Trophy className="w-3 h-3" /> {uiStrings.bestTime}: {bestTime}s
             </p>
           )}
         </div>
@@ -417,11 +424,12 @@ function LetterGame({ unit, lang, onSpeak, onBack, fontSize }: {
 }
 
 // ===== Practice Quiz (multiple-choice) =====
-function PracticeQuiz({ unit, lang, onSpeak, onBack }: {
+function PracticeQuiz({ unit, lang, onSpeak, onBack, uiStrings }: {
   unit: AsianUnit;
   lang: LearnLang;
   onSpeak: (text: string, lang: LearnLang) => void;
   onBack: () => void;
+  uiStrings: UIStrings;
 }) {
   const [questions, setQuestions] = useState(() => buildQuestions(unit));
   const [idx, setIdx] = useState(0);
@@ -474,15 +482,15 @@ function PracticeQuiz({ unit, lang, onSpeak, onBack }: {
           <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 ${pct >= 70 ? 'bg-emerald-100' : 'bg-amber-100'}`}>
             <span className="text-4xl">{pct >= 70 ? '🎉' : '💪'}</span>
           </div>
-          <h3 className="text-xl font-bold text-slate-800 mb-2">انتهى التمرين!</h3>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">{uiStrings.practiceDone}</h3>
           <p className="text-3xl font-bold text-emerald-600 mb-1">{score} / {questions.length}</p>
-          <p className="text-slate-500 mb-6">{pct}% صحيح</p>
+          <p className="text-slate-500 mb-6">{pct}% {uiStrings.correct}</p>
           <div className="flex gap-3">
             <button onClick={restart} className="flex-1 px-4 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors cursor-pointer flex items-center justify-center gap-2">
-              <RotateCcw className="w-4 h-4" /> إعادة
+              <RotateCcw className="w-4 h-4" /> {uiStrings.retry2}
             </button>
             <button onClick={onBack} className="flex-1 px-4 py-3 bg-slate-100 text-slate-600 rounded-xl font-semibold hover:bg-slate-200 transition-colors cursor-pointer">
-              رجوع
+              {uiStrings.back}
             </button>
           </div>
         </div>
@@ -494,7 +502,7 @@ function PracticeQuiz({ unit, lang, onSpeak, onBack }: {
     <div className="max-w-lg mx-auto">
       <div className="flex items-center justify-between mb-4">
         <button onClick={onBack} className="flex items-center gap-1 text-slate-500 hover:text-slate-700 text-sm cursor-pointer">
-          <ChevronRight className="w-4 h-4 rotate-180" /> رجوع
+          <ChevronRight className="w-4 h-4 rotate-180" /> {uiStrings.back}
         </button>
         <div className="flex items-center gap-2 text-sm">
           <Dumbbell className="w-4 h-4 text-emerald-500" />
@@ -507,7 +515,7 @@ function PracticeQuiz({ unit, lang, onSpeak, onBack }: {
 
       <div className="bg-white rounded-2xl shadow-lg p-6 mb-4">
         <div className="text-center mb-6">
-          <p className="text-sm text-slate-400 mb-2">ما معنى هذه الكلمة؟</p>
+          <p className="text-sm text-slate-400 mb-2">{uiStrings.whatMeaning}</p>
           <button
             onClick={() => onSpeak(q.pair.char, lang)}
             className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-colors cursor-pointer"
@@ -547,7 +555,7 @@ function PracticeQuiz({ unit, lang, onSpeak, onBack }: {
       </div>
 
       <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
-        <span className="font-semibold text-emerald-600">النقاط: {score}</span>
+        <span className="font-semibold text-emerald-600">{uiStrings.score}: {score}</span>
       </div>
     </div>
   );

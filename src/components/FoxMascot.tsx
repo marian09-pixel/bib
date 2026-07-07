@@ -74,6 +74,7 @@ export default function FoxMascot({ lang, message, className = '' }: FoxMascotPr
           {lang === 'zh' && <ChineseHat />}
           {lang === 'ko' && <Hanbok />}
           {lang === 'fr' && <Beret />}
+          {lang === 'es' && <Sombrero />}
         </svg>
 
         {/* Noodle bowl for Korean */}
@@ -87,6 +88,13 @@ export default function FoxMascot({ lang, message, className = '' }: FoxMascotPr
         {lang === 'fr' && (
           <div className="absolute -right-2 bottom-3 text-2xl select-none rotate-[20deg]" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))' }}>
             🥖
+          </div>
+        )}
+
+        {/* Taco for Spanish */}
+        {lang === 'es' && (
+          <div className="absolute -right-1 bottom-2 text-2xl select-none" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))' }}>
+            🌮
           </div>
         )}
       </div>
@@ -247,6 +255,36 @@ function Beret() {
       <circle cx="48" cy="44" r="3.5" fill="#0055A4" />
       <circle cx="48" cy="44" r="2.2" fill="#FFFFFF" />
       <circle cx="48" cy="44" r="0.9" fill="#EF4135" />
+    </g>
+  );
+}
+
+// ===== Sombrero (Mexican/Spanish hat) =====
+function Sombrero() {
+  return (
+    <g>
+      {/* Wide brim */}
+      <ellipse cx="60" cy="48" rx="38" ry="8" fill="#C4956A" />
+      <ellipse cx="60" cy="46" rx="36" ry="7" fill="#D4A574" />
+
+      {/* Brim edge darker */}
+      <ellipse cx="60" cy="49" rx="38" ry="3" fill="#A67B4E" opacity="0.6" />
+
+      {/* Hat crown */}
+      <ellipse cx="60" cy="40" rx="16" ry="12" fill="#C4956A" />
+      <ellipse cx="60" cy="38" rx="14" ry="10" fill="#D4A574" />
+
+      {/* Decorative band */}
+      <ellipse cx="60" cy="44" rx="15" ry="3" fill="#8B4513" />
+      <ellipse cx="60" cy="44" rx="15" ry="2" fill="#A0522D" />
+
+      {/* Decorative dots on band */}
+      <circle cx="52" cy="44" r="1.2" fill="#FFD700" />
+      <circle cx="60" cy="44" r="1.2" fill="#FFD700" />
+      <circle cx="68" cy="44" r="1.2" fill="#FFD700" />
+
+      {/* Top bump */}
+      <ellipse cx="60" cy="32" rx="4" ry="3" fill="#D4A574" />
     </g>
   );
 }

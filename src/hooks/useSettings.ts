@@ -6,7 +6,7 @@ const STORAGE_KEY = 'learnlang_fontsize';
 const TIMER_KEY = 'learnlang_besttimes';
 
 const FONT_CLASSES: Record<FontSize, { card: string; char: string; arabic: string; roman: string }> = {
-  sm: { card: 'text-sm', char: 'text-xl', arabic: 'text-sm', roman: 'text-xs' },
+  sm: { card: 'text-xs', char: 'text-base', arabic: 'text-xs', roman: 'text-[10px]' },
   md: { card: 'text-base', char: 'text-2xl', arabic: 'text-base', roman: 'text-sm' },
   lg: { card: 'text-lg', char: 'text-3xl', arabic: 'text-lg', roman: 'text-base' },
 };
