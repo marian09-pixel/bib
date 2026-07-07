@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Star, Languages, Settings, Type, Check } from 'lucide-react';
-import { getUi, type LearnLang, type NativeLang, langFlag } from './data/i18n';
+import { Star, Languages, Settings, Type, Check, Globe } from 'lucide-react';
+import { getUi, type LearnLang, type NativeLang, langFlag, nativeLangFlag, nativeLangLabel } from './data/i18n';
 import { getAsianData } from './data/asianLanguages';
 import WelcomePage from './components/WelcomePage';
 import AsianLanguagePanel from './components/AsianLanguagePanel';
@@ -34,6 +34,7 @@ export default function App() {
   });
 
   const { fontSize, changeFontSize, settingsOpen, setSettingsOpen } = useSettings();
+  const [nativeOpen, setNativeOpen] = useState(false);
 
   const t = learnLang && nativeLang ? getUi(learnLang, nativeLang) : getUi('ru', nativeLang || 'ar');
   const asianData = learnLang ? getAsianData(learnLang) : null;
@@ -44,6 +45,7 @@ export default function App() {
   const handleNativeSelect = useCallback((lang: NativeLang) => {
     try { localStorage.setItem(NATIVE_KEY, lang); } catch { /* ignore */ }
     setNativeLang(lang);
+    setNativeOpen(false);
   }, []);
 
   const handleLearnSelect = useCallback((lang: LearnLang) => {
@@ -123,6 +125,43 @@ export default function App() {
                           </button>
                         );
                       })}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="relative">
+              <button
+                onClick={() => setNativeOpen(!nativeOpen)}
+                className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer"
+                title={t.nativeLangTitle}
+              >
+                <Globe className="w-4 h-4 text-slate-600" />
+              </button>
+              {nativeOpen && (
+                <>
+                  <div className="fixed inset-0 z-30" onClick={() => setNativeOpen(false)} />
+                  <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 bg-white rounded-xl shadow-lg border border-slate-200 p-3 z-40 min-w-[180px]`}>
+                    <div className="flex items-center gap-2 mb-2 pb-2 border-b border-slate-100">
+                      <Globe className="w-4 h-4 text-slate-500" />
+                      <span className="text-sm font-semibold text-slate-700">{t.nativeLangTitle}</span>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      {(['ar', 'fr', 'en', 'ru'] as NativeLang[]).map((nl) => (
+                        <button
+                          key={nl}
+                          onClick={() => handleNativeSelect(nl)}
+                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer flex items-center gap-2 ${
+                            nativeLang === nl
+                              ? 'bg-teal-600 text-white'
+                              : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          <span className="text-lg">{nativeLangFlag[nl]}</span>
+                          <span>{nativeLangLabel[nl]}</span>
+                          {nativeLang === nl && <Check className="w-3 h-3 mr-auto" />}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </>

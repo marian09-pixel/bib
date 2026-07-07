@@ -1,5 +1,5 @@
 export type LearnLang = 'ru' | 'en' | 'ja' | 'zh' | 'ko' | 'fr' | 'es';
-export type NativeLang = 'ar' | 'fr' | 'en';
+export type NativeLang = 'ar' | 'fr' | 'en' | 'ru';
 
 export interface UIStrings {
   appTitle: string;
@@ -189,22 +189,59 @@ const enStrings: UIStrings = {
   arabic: 'Arabic', languagesCount: '7 languages',
 };
 
+// ===== Russian UI =====
+const ruStrings: UIStrings = {
+  ...arStrings,
+  appSubtitle: 'Игра на совпадение', matchGame: 'Игра на совпадение',
+  levels: 'Уровни', bestStreak: 'Лучшая серия', home: 'Меню', restart: 'Заново',
+  matches: 'совпадение', outOfTries: 'Попытки закончились!', retry: 'Попробовать снова',
+  menu: 'Меню', streak: 'серия', bonus: 'бонус', levelScore: 'Очки уровня',
+  wellDone: 'Молодец!', completedLevel: (name) => `Уровень ${name} завершён`,
+  points: 'Очки', time: 'Время', bestStreakLabel: 'Лучшая серия', mistakes: 'Ошибки',
+  nextLevel: (name) => `Следующий: ${name}`, backToMenu: 'В меню',
+  wordsCount: (n) => `${n} слов`, changeLang: 'Сменить язык',
+  welcome: 'Добро пожаловать', chooseLang: 'Выберите язык для изучения',
+  chooseLangDesc: 'Начните своё путешествие в изучении языков',
+  russian: 'Русский', english: 'Английский', japanese: 'Японский', chinese: 'Китайский',
+  korean: 'Корейский', french: 'Французский', spanish: 'Испанский',
+  russianDesc: 'Учите русский интерактивно', englishDesc: 'Учите английский интерактивно',
+  japaneseDesc: 'Учите японский интерактивно', chineseDesc: 'Учите китайский интерактивно',
+  koreanDesc: 'Учите корейский интерактивно', frenchDesc: 'Учите французский интерактивно',
+  spanishDesc: 'Учите испанский интерактивно',
+  start: 'Начать', targetLangName: '',
+  letters: 'Базовые буквы', lettersDesc: 'Учите буквы со звуком',
+  greetings: 'Приветствия', greetingsDesc: 'Общие фразы с переводом',
+  matchLetter: 'Игра на совпадение', matchLetterDesc: 'Сопоставьте буквы со звуком',
+  listen: 'Слушать', showMore: 'Показать больше', showLess: 'Показать меньше',
+  browse: 'Обзор', game: 'Игра', practice: 'Упражнение',
+  whatMeaning: 'Что значит это слово?', practiceDone: 'Упражнение завершено!',
+  correct: 'правильно', retry2: 'Заново', back: 'Назад', score: 'Очки',
+  newRecord: 'Новый рекорд!', bestTime: 'Лучшее время',
+  fontSize: 'Размер шрифта', small: 'Малый', medium: 'Средний', large: 'Большой',
+  displaySettings: 'Настройки экрана',
+  nativeLangTitle: 'Выберите ваш язык', nativeLangDesc: 'Выберите язык интерфейса',
+  arabic: 'Арабский', languagesCount: '7 языков',
+};
+
 export const nativeUi: Record<NativeLang, UIStrings> = {
   ar: arStrings,
   fr: frStrings,
   en: enStrings,
+  ru: ruStrings,
 };
 
 export const nativeLangFlag: Record<NativeLang, string> = {
   ar: '🇩🇿',
   fr: '🇫🇷',
   en: '🇬🇧',
+  ru: '🇷🇺',
 };
 
 export const nativeLangLabel: Record<NativeLang, string> = {
   ar: 'العربية',
   fr: 'Français',
   en: 'English',
+  ru: 'Русский',
 };
 
 // Per-learn-lang overrides for appTitle, matchDesc, footer, targetLangName

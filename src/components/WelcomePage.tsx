@@ -24,6 +24,7 @@ const NATIVE_OPTIONS: { id: NativeLang; flag: string; label: string; accentBg: s
   { id: 'ar', flag: nativeLangFlag.ar, label: nativeLangLabel.ar, accentBg: 'bg-teal-100', accentText: 'text-teal-600', accentBorder: 'border-teal-500' },
   { id: 'fr', flag: nativeLangFlag.fr, label: nativeLangLabel.fr, accentBg: 'bg-rose-100', accentText: 'text-rose-600', accentBorder: 'border-rose-500' },
   { id: 'en', flag: nativeLangFlag.en, label: nativeLangLabel.en, accentBg: 'bg-blue-100', accentText: 'text-blue-600', accentBorder: 'border-blue-500' },
+  { id: 'ru', flag: nativeLangFlag.ru, label: nativeLangLabel.ru, accentBg: 'bg-violet-100', accentText: 'text-violet-600', accentBorder: 'border-violet-500' },
 ];
 
 export default function WelcomePage({ nativeLang, onSelectNative, onSelectLearn }: WelcomePageProps) {
@@ -47,7 +48,7 @@ export default function WelcomePage({ nativeLang, onSelectNative, onSelectLearn 
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-5">
             {NATIVE_OPTIONS.map((opt) => {
               const isHovered = hoveredNative === opt.id;
               return (
