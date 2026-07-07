@@ -1,4 +1,4 @@
-export type LearnLang = 'ru' | 'en' | 'ja' | 'zh' | 'ko';
+export type LearnLang = 'ru' | 'en' | 'ja' | 'zh' | 'ko' | 'fr';
 
 export interface UIStrings {
   appTitle: string;
@@ -35,11 +35,13 @@ export interface UIStrings {
   japanese: string;
   chinese: string;
   korean: string;
+  french: string;
   russianDesc: string;
   englishDesc: string;
   japaneseDesc: string;
   chineseDesc: string;
   koreanDesc: string;
+  frenchDesc: string;
   start: string;
   targetLangName: string;
   // Asian panel strings
@@ -54,7 +56,7 @@ export interface UIStrings {
   showLess: string;
 }
 
-const baseStrings: Omit<UIStrings, 'appTitle' | 'matchDesc' | 'footer' | 'targetLangName' | 'russianDesc' | 'englishDesc' | 'japaneseDesc' | 'chineseDesc' | 'koreanDesc'> = {
+const baseStrings: Omit<UIStrings, 'appTitle' | 'matchDesc' | 'footer' | 'targetLangName' | 'russianDesc' | 'englishDesc' | 'japaneseDesc' | 'chineseDesc' | 'koreanDesc' | 'frenchDesc'> = {
   appSubtitle: 'لعبة المطابقة',
   matchGame: 'لعبة المطابقة',
   levels: 'مستويات',
@@ -86,6 +88,8 @@ const baseStrings: Omit<UIStrings, 'appTitle' | 'matchDesc' | 'footer' | 'target
   japanese: 'اللغة اليابانية',
   chinese: 'اللغة الصينية',
   korean: 'اللغة الكورية',
+  french: 'اللغة الفرنسية',
+  frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
   start: 'ابدأ التعلم',
   letters: 'الحروف الأساسية',
   lettersDesc: 'تعلّم الحروف بالنطق واللعب',
@@ -158,6 +162,20 @@ export const ui: Record<LearnLang, UIStrings> = {
     japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
     chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
     koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
+    frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
+  },
+  fr: {
+    ...baseStrings,
+    appTitle: 'تعلم الفرنسية',
+    matchDesc: () => 'اربط الكلمات العربية بمعانيها الفرنسية',
+    footer: 'تعلم اللغة الفرنسية - تمرّن واستمتع',
+    targetLangName: 'الفرنسية',
+    russianDesc: 'تعلم الروسية بطريقة تفاعلية ممتعة',
+    englishDesc: 'تعلم الإنجليزية بطريقة تفاعلية ممتعة',
+    japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة',
+    chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
+    koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة',
+    frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
   },
 };
 
@@ -167,6 +185,7 @@ export const langFlag: Record<LearnLang, string> = {
   ja: '🇯🇵',
   zh: '🇨🇳',
   ko: '🇰🇷',
+  fr: '🇫🇷',
 };
 
 export const langSpeechCode: Record<LearnLang, string> = {
@@ -175,4 +194,5 @@ export const langSpeechCode: Record<LearnLang, string> = {
   ja: 'ja-JP',
   zh: 'zh-CN',
   ko: 'ko-KR',
+  fr: 'fr-FR',
 };

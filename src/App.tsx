@@ -7,7 +7,7 @@ import AsianLanguagePanel from './components/AsianLanguagePanel';
 import FoxMascot from './components/FoxMascot';
 import { initVoices } from './hooks/useSpeech';
 
-const ALL_LANGS: LearnLang[] = ['ru', 'en', 'ja', 'zh', 'ko'];
+const ALL_LANGS: LearnLang[] = ['ru', 'en', 'ja', 'zh', 'ko', 'fr'];
 const STORAGE_KEY = 'learnlang_choice';
 
 export default function App() {
@@ -75,7 +75,7 @@ export default function App() {
       <footer className="max-w-4xl mx-auto px-4 py-4 text-center text-xs text-slate-400">
         <p>{t.footer}</p>
       </footer>
-      <FoxMascot lang={learnLang} message="مرحباً! أنا ثعلبك الذكي. تعال نتعلم معاً!" />
+      <FoxMascot lang={learnLang} message={learnLang === 'fr' ? "Bonjour! Je suis votre renard intelligent. Apprenons ensemble!" : "مرحباً! أنا ثعلبك الذكي. تعال نتعلم معاً!"} />
     </div>
   );
 }

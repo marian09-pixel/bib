@@ -73,12 +73,20 @@ export default function FoxMascot({ lang, message, className = '' }: FoxMascotPr
           {lang === 'ja' && <Hachimaki />}
           {lang === 'zh' && <ChineseHat />}
           {lang === 'ko' && <Hanbok />}
+          {lang === 'fr' && <Beret />}
         </svg>
 
         {/* Noodle bowl for Korean */}
         {lang === 'ko' && (
           <div className="absolute -right-1 bottom-2 text-2xl select-none" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))' }}>
             🍜
+          </div>
+        )}
+
+        {/* Baguette for French */}
+        {lang === 'fr' && (
+          <div className="absolute -right-2 bottom-3 text-2xl select-none rotate-[20deg]" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))' }}>
+            🥖
           </div>
         )}
       </div>
@@ -216,6 +224,29 @@ function Hanbok() {
       <circle cx="50" cy="145" r="1.5" fill="#D4A843" opacity="0.6" />
       <circle cx="60" cy="148" r="1.5" fill="#D4A843" opacity="0.6" />
       <circle cx="70" cy="145" r="1.5" fill="#D4A843" opacity="0.6" />
+    </g>
+  );
+}
+
+// ===== Beret (French traditional hat) =====
+function Beret() {
+  return (
+    <g>
+      {/* Beret base - flat round cap */}
+      <ellipse cx="60" cy="44" rx="28" ry="10" fill="#1A1A2E" />
+      <ellipse cx="60" cy="42" rx="26" ry="9" fill="#2A2A4E" />
+      <ellipse cx="60" cy="41" rx="24" ry="7" fill="#3A3A5E" opacity="0.5" />
+
+      {/* Beret rim band */}
+      <ellipse cx="60" cy="47" rx="22" ry="4" fill="#0A0A1E" />
+
+      {/* Small stem on top */}
+      <circle cx="66" cy="36" r="2.5" fill="#1A1A2E" />
+
+      {/* Tricolor cockade (blue-white-red) */}
+      <circle cx="48" cy="44" r="3.5" fill="#0055A4" />
+      <circle cx="48" cy="44" r="2.2" fill="#FFFFFF" />
+      <circle cx="48" cy="44" r="0.9" fill="#EF4135" />
     </g>
   );
 }

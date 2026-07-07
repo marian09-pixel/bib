@@ -1,6 +1,7 @@
 import type { LearnLang } from './i18n';
 import { levels as levelsRu, type Level } from './vocabulary';
 import { levelsEn } from './vocabularyEn';
+import { levelsFr } from './vocabularyFr';
 
 export interface AsianPair {
   id: string;
@@ -737,6 +738,7 @@ export function getAsianData(lang: LearnLang): AsianLanguageData | null {
   if (lang === 'ko') return koreanData;
   if (lang === 'ru') return convertLevelsToData('ru', levelsRu);
   if (lang === 'en') return convertLevelsToData('en', levelsEn);
+  if (lang === 'fr') return convertLevelsToData('fr', levelsFr);
   return null;
 }
 

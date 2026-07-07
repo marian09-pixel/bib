@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Home, Volume2, BookOpen, RotateCcw, CheckCircle2, Zap, ChevronRight } from 'lucide-react';
+import { Home, Volume2, BookOpen, RotateCcw, CheckCircle2, Zap, ChevronRight, Dumbbell, X } from 'lucide-react';
 import type { AsianLanguageData, AsianPair, AsianUnit } from '../data/asianLanguages';
 import type { LearnLang } from '../data/i18n';
 import { useSpeech } from '../hooks/useSpeech';
@@ -13,7 +13,7 @@ interface AsianLanguagePanelProps {
   showLessLabel: string;
 }
 
-type SubView = 'menu' | 'unit' | 'game';
+type SubView = 'menu' | 'unit' | 'game' | 'practice';
 
 interface GameCard {
   id: string;
@@ -41,6 +41,11 @@ export default function AsianLanguagePanel({
     setSubView('game');
   };
 
+  const openPractice = (unit: AsianUnit) => {
+    setActiveUnit(unit);
+    setSubView('practice');
+  };
+
   return (
     <div className="animate-[fadeIn_0.3s_ease-out]">
       {/* Header bar */}
@@ -63,7 +68,7 @@ export default function AsianLanguagePanel({
       </div>
 
       {subView === 'menu' && (
-        <MenuView data={data} onOpenUnit={openUnit} onOpenGame={openGame} />
+        <MenuView data={data} onOpenUnit={openUnit} onOpenGame={openGame} onOpenPractice={openPractice} />
       )}
 
       {subView === 'unit' && activeUnit && (
@@ -87,15 +92,25 @@ export default function AsianLanguagePanel({
           onBack={() => setSubView('menu')}
         />
       )}
+
+      {subView === 'practice' && activeUnit && (
+        <PracticeQuiz
+          unit={activeUnit}
+          lang={lang}
+          onSpeak={speak}
+          onBack={() => setSubView('menu')}
+        />
+      )}
     </div>
   );
 }
 
 // ===================== MENU =====================
-function MenuView({ data, onOpenUnit, onOpenGame }: {
+function MenuView({ data, onOpenUnit, onOpenGame, onOpenPractice }: {
   data: AsianLanguageData;
   onOpenUnit: (u: AsianUnit) => void;
   onOpenGame: (u: AsianUnit) => void;
+  onOpenPractice: (u: AsianUnit) => void;
 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
@@ -137,6 +152,13 @@ function MenuView({ data, onOpenUnit, onOpenGame }: {
               >
                 <Zap className="w-4 h-4" />
                 <span>لعبة</span>
+              </button>
+              <button
+                onClick={() => onOpenPractice(unit)}
+                className="flex-1 px-3 py-2 bg-emerald-100 text-emerald-600 rounded-lg text-sm font-semibold transition-all hover:bg-emerald-200 cursor-pointer flex items-center justify-center gap-1"
+              >
+                <Dumbbell className="w-4 h-4" />
+                <span>تمرين</span>
               </button>
             </div>
             <p className="text-xs text-slate-400 text-center mt-2">{unit.pairs.length} عنصر</p>
@@ -339,6 +361,143 @@ function LetterGame({ unit, lang, onSpeak, onBack }: {
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+// ===== Practice Quiz (multiple-choice) =====
+function PracticeQuiz({ unit, lang, onSpeak, onBack }: {
+  unit: AsianUnit;
+  lang: LearnLang;
+  onSpeak: (text: string, lang: LearnLang) => void;
+  onBack: () => void;
+}) {
+  const [questions, setQuestions] = useState(() => buildQuestions(unit));
+  const [idx, setIdx] = useState(0);
+  const [score, setScore] = useState(0);
+  const [picked, setPicked] = useState<string | null>(null);
+  const [showResult, setShowResult] = useState(false);
+
+  function buildQuestions(u: AsianUnit) {
+    const shuffled = [...u.pairs].sort(() => Math.random() - 0.5).slice(0, Math.min(10, u.pairs.length));
+    return shuffled.map((pair) => {
+      const wrong = u.pairs
+        .filter((p) => p.id !== pair.id)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+        .map((p) => p.arabic);
+      const options = [...wrong, pair.arabic].sort(() => Math.random() - 0.5);
+      return { pair, options };
+    });
+  }
+
+  const q = questions[idx];
+
+  const handlePick = (opt: string) => {
+    if (picked) return;
+    setPicked(opt);
+    if (opt === q.pair.arabic) setScore((s) => s + 1);
+    setTimeout(() => {
+      if (idx + 1 < questions.length) {
+        setIdx((i) => i + 1);
+        setPicked(null);
+      } else {
+        setShowResult(true);
+      }
+    }, 900);
+  };
+
+  const restart = () => {
+    setQuestions(buildQuestions(unit));
+    setIdx(0);
+    setScore(0);
+    setPicked(null);
+    setShowResult(false);
+  };
+
+  if (showResult) {
+    const pct = Math.round((score / questions.length) * 100);
+    return (
+      <div className="max-w-lg mx-auto">
+        <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
+          <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 ${pct >= 70 ? 'bg-emerald-100' : 'bg-amber-100'}`}>
+            <span className="text-4xl">{pct >= 70 ? '🎉' : '💪'}</span>
+          </div>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">انتهى التمرين!</h3>
+          <p className="text-3xl font-bold text-emerald-600 mb-1">{score} / {questions.length}</p>
+          <p className="text-slate-500 mb-6">{pct}% صحيح</p>
+          <div className="flex gap-3">
+            <button onClick={restart} className="flex-1 px-4 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors cursor-pointer flex items-center justify-center gap-2">
+              <RotateCcw className="w-4 h-4" /> إعادة
+            </button>
+            <button onClick={onBack} className="flex-1 px-4 py-3 bg-slate-100 text-slate-600 rounded-xl font-semibold hover:bg-slate-200 transition-colors cursor-pointer">
+              رجوع
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-lg mx-auto">
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={onBack} className="flex items-center gap-1 text-slate-500 hover:text-slate-700 text-sm cursor-pointer">
+          <ChevronRight className="w-4 h-4 rotate-180" /> رجوع
+        </button>
+        <div className="flex items-center gap-2 text-sm">
+          <Dumbbell className="w-4 h-4 text-emerald-500" />
+          <span className="font-semibold text-slate-700">{unit.title}</span>
+        </div>
+        <div className="text-sm font-semibold text-emerald-600">
+          {idx + 1} / {questions.length}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-lg p-6 mb-4">
+        <div className="text-center mb-6">
+          <p className="text-sm text-slate-400 mb-2">ما معنى هذه الكلمة؟</p>
+          <button
+            onClick={() => onSpeak(q.pair.char, lang)}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-colors cursor-pointer"
+          >
+            <Volume2 className="w-5 h-5 text-emerald-500" />
+            <span className="text-2xl font-bold text-slate-800">{q.pair.char}</span>
+          </button>
+          <p className="text-sm text-slate-400 mt-1">{q.pair.roman}</p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3">
+          {q.options.map((opt) => {
+            const isCorrect = opt === q.pair.arabic;
+            const isPicked = opt === picked;
+            let cls = 'bg-slate-50 hover:bg-slate-100 border-slate-200';
+            if (picked) {
+              if (isCorrect) cls = 'bg-emerald-50 border-emerald-400';
+              else if (isPicked) cls = 'bg-rose-50 border-rose-400';
+              else cls = 'bg-slate-50 border-slate-200 opacity-50';
+            }
+            return (
+              <button
+                key={opt}
+                onClick={() => handlePick(opt)}
+                disabled={!!picked}
+                className={`px-4 py-3 rounded-xl border-2 text-right font-semibold transition-all ${cls} ${!picked ? 'cursor-pointer' : 'cursor-default'}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-700">{opt}</span>
+                  {picked && isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+                  {picked && isPicked && !isCorrect && <X className="w-5 h-5 text-rose-500" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
+        <span className="font-semibold text-emerald-600">النقاط: {score}</span>
       </div>
     </div>
   );

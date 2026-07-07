@@ -34,6 +34,8 @@ export default function WelcomePage({ onSelect }: WelcomePageProps) {
       accent: 'amber', accentBg: 'bg-amber-100', accentText: 'text-amber-600', accentBorder: 'border-amber-500', accentShadow: 'shadow-amber-200' },
     { id: 'ko', label: t.korean, desc: t.koreanDesc, flag: langFlag.ko,
       accent: 'indigo', accentBg: 'bg-indigo-100', accentText: 'text-indigo-600', accentBorder: 'border-indigo-500', accentShadow: 'shadow-indigo-200' },
+    { id: 'fr', label: t.french, desc: t.frenchDesc, flag: langFlag.fr,
+      accent: 'rose', accentBg: 'bg-rose-100', accentText: 'text-rose-600', accentBorder: 'border-rose-500', accentShadow: 'shadow-rose-200' },
   ];
 
   return (
@@ -103,7 +105,7 @@ export default function WelcomePage({ onSelect }: WelcomePageProps) {
         <div className="flex items-center justify-center flex-wrap gap-4 md:gap-6 mt-8 text-xs text-slate-400">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>5 لغات</span>
+            <span>6 لغات</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
