@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Home, Volume2, BookOpen, RotateCcw, CheckCircle2, Zap, ChevronRight, Dumbbell, X } from 'lucide-react';
+import { Home, Volume2, BookOpen, RotateCcw, CheckCircle2, Zap, ChevronRight, Dumbbell, X, Timer, Trophy } from 'lucide-react';
 import type { AsianLanguageData, AsianPair, AsianUnit } from '../data/asianLanguages';
 import type { LearnLang } from '../data/i18n';
 import { useSpeech } from '../hooks/useSpeech';
+import { getFontClasses, getBestTime, saveBestTime, type FontSize } from '../hooks/useSettings';
 
 interface AsianLanguagePanelProps {
   data: AsianLanguageData;
@@ -11,6 +12,7 @@ interface AsianLanguagePanelProps {
   listenLabel: string;
   showMoreLabel: string;
   showLessLabel: string;
+  fontSize: FontSize;
 }
 
 type SubView = 'menu' | 'unit' | 'game' | 'practice';
@@ -25,7 +27,7 @@ interface GameCard {
 }
 
 export default function AsianLanguagePanel({
-  data, lang, onHome, listenLabel, showMoreLabel, showLessLabel,
+  data, lang, onHome, listenLabel, showMoreLabel, showLessLabel, fontSize,
 }: AsianLanguagePanelProps) {
   const [subView, setSubView] = useState<SubView>('menu');
   const [activeUnit, setActiveUnit] = useState<AsianUnit | null>(null);
@@ -81,6 +83,7 @@ export default function AsianLanguagePanel({
           showMoreLabel={showMoreLabel}
           showLessLabel={showLessLabel}
           onPlayGame={() => openGame(activeUnit)}
+          fontSize={fontSize}
         />
       )}
 
@@ -90,6 +93,7 @@ export default function AsianLanguagePanel({
           lang={lang}
           onSpeak={speak}
           onBack={() => setSubView('menu')}
+          fontSize={fontSize}
         />
       )}
 
@@ -170,7 +174,7 @@ function MenuView({ data, onOpenUnit, onOpenGame, onOpenPractice }: {
 }
 
 // ===================== UNIT VIEW =====================
-function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, showLessLabel, onPlayGame }: {
+function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, showLessLabel, onPlayGame, fontSize }: {
   unit: AsianUnit;
   lang: LearnLang;
   onSpeak: (t: string) => void;
@@ -179,6 +183,7 @@ function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, sho
   showMoreLabel: string;
   showLessLabel: string;
   onPlayGame: () => void;
+  fontSize: FontSize;
 }) {
   const [expanded, setExpanded] = useState(false);
   const visible = expanded ? unit.pairs : unit.pairs.slice(0, 15);
@@ -200,7 +205,7 @@ function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, sho
 
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
         {visible.map((pair, i) => (
-          <PairCard key={pair.id} pair={pair} onSpeak={onSpeak} delay={i * 30} />
+          <PairCard key={pair.id} pair={pair} onSpeak={onSpeak} delay={i * 30} fontSize={fontSize} />
         ))}
       </div>
 
@@ -228,22 +233,24 @@ function UnitView({ unit, lang, onSpeak, listenLabel, onBack, showMoreLabel, sho
   );
 }
 
-function PairCard({ pair, onSpeak, delay }: {
+function PairCard({ pair, onSpeak, delay, fontSize }: {
   pair: AsianPair;
   onSpeak: (t: string) => void;
   delay: number;
+  fontSize: FontSize;
 }) {
+  const fc = getFontClasses(fontSize);
   return (
     <div
-      className="bg-white rounded-xl border border-slate-200 p-3 text-center hover:shadow-md transition-all cursor-pointer animate-[fadeIn_0.3s_ease-out] group"
+      className={`bg-white rounded-xl border border-slate-200 p-3 text-center hover:shadow-md transition-all cursor-pointer animate-[fadeIn_0.3s_ease-out] group`}
       style={{ animationDelay: `${delay}ms` }}
       onClick={() => onSpeak(pair.char)}
     >
-      <div className="text-2xl md:text-3xl font-bold text-slate-800 mb-1 group-hover:text-teal-600 transition-colors break-all">
+      <div className={`${fc.char} font-bold text-slate-800 mb-1 group-hover:text-teal-600 transition-colors break-all`}>
         {pair.char}
       </div>
-      <div className="text-xs text-slate-400 font-mono">{pair.roman}</div>
-      <div className="text-sm text-slate-600 font-medium mt-0.5">{pair.arabic}</div>
+      <div className={`${fc.roman} text-slate-400 font-mono`}>{pair.roman}</div>
+      <div className={`${fc.arabic} text-slate-600 font-medium mt-0.5`}>{pair.arabic}</div>
       <div className="flex items-center justify-center mt-1.5">
         <Volume2 className="w-3.5 h-3.5 text-teal-500 opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
@@ -252,11 +259,12 @@ function PairCard({ pair, onSpeak, delay }: {
 }
 
 // ===================== MATCHING GAME =====================
-function LetterGame({ unit, lang, onSpeak, onBack }: {
+function LetterGame({ unit, lang, onSpeak, onBack, fontSize }: {
   unit: AsianUnit;
   lang: LearnLang;
   onSpeak: (t: string) => void;
   onBack: () => void;
+  fontSize: FontSize;
 }) {
   const gamePairs = unit.pairs.slice(0, 10);
   const [cards, setCards] = useState<GameCard[]>([]);
@@ -265,6 +273,11 @@ function LetterGame({ unit, lang, onSpeak, onBack }: {
   const [wrong, setWrong] = useState<number[]>([]);
   const [score, setScore] = useState(0);
   const [mistakes, setMistakes] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [bestTime, setBestTime] = useState<number | null>(() => getBestTime(unit.id, lang));
+  const [newRecord, setNewRecord] = useState(false);
+  const fc = getFontClasses(fontSize);
 
   useEffect(() => {
     const charCards: GameCard[] = gamePairs.map((p) => ({
@@ -276,9 +289,19 @@ function LetterGame({ unit, lang, onSpeak, onBack }: {
     const all = [...charCards, ...arCards].sort(() => Math.random() - 0.5);
     all.forEach((c, i) => (c.index = i));
     setCards(all);
+    setElapsed(0);
+    setRunning(false);
+    setNewRecord(false);
   }, [unit.id]);
 
+  useEffect(() => {
+    if (!running) return;
+    const interval = setInterval(() => setElapsed((e) => e + 1), 1000);
+    return () => clearInterval(interval);
+  }, [running]);
+
   const handleClick = useCallback((index: number) => {
+    if (!running) setRunning(true);
     if (selected.length === 2) return;
     if (selected.includes(index)) {
       setSelected(prev => prev.filter(i => i !== index));
@@ -305,9 +328,22 @@ function LetterGame({ unit, lang, onSpeak, onBack }: {
   }, [selected, cards, onSpeak]);
 
   const allDone = matched.size === gamePairs.length;
+
+  useEffect(() => {
+    if (allDone && running) {
+      setRunning(false);
+      const isRecord = saveBestTime(unit.id, lang, elapsed);
+      if (isRecord) {
+        setNewRecord(true);
+        setBestTime(elapsed);
+      }
+    }
+  }, [allDone, running, elapsed, unit.id, lang]);
+
   const restart = () => {
     setCards(prev => [...prev].sort(() => Math.random() - 0.5).map((c, i) => { c.index = i; return c; }));
     setSelected([]); setMatched(new Set()); setWrong([]); setScore(0); setMistakes(0);
+    setElapsed(0); setRunning(false); setNewRecord(false);
   };
 
   return (
@@ -318,6 +354,10 @@ function LetterGame({ unit, lang, onSpeak, onBack }: {
           <p className="text-xs text-slate-400">اربط الحرف/الكلمة بمعناه العربي</p>
         </div>
         <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 text-sm">
+            <Timer className="w-4 h-4 text-teal-500" />
+            <span className="font-semibold text-slate-700 tabular-nums">{elapsed}s</span>
+          </div>
           <div className="flex items-center gap-1.5 text-sm">
             <Zap className="w-4 h-4 text-amber-500" />
             <span className="font-semibold text-slate-700">{score}</span>
@@ -333,7 +373,17 @@ function LetterGame({ unit, lang, onSpeak, onBack }: {
         <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4 text-center">
           <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-1" />
           <p className="text-emerald-700 font-semibold">أحسنت! أكملت جميع المطابقات</p>
-          <p className="text-sm text-emerald-600 mt-1">النقاط: {score} | الأخطاء: {mistakes}</p>
+          <p className="text-sm text-emerald-600 mt-1">النقاط: {score} | الأخطاء: {mistakes} | الوقت: {elapsed} ثانية</p>
+          {newRecord && (
+            <p className="text-sm text-amber-600 font-bold mt-1 flex items-center justify-center gap-1">
+              <Trophy className="w-4 h-4" /> رقم قياسي جديد!
+            </p>
+          )}
+          {bestTime !== null && !newRecord && (
+            <p className="text-xs text-slate-500 mt-1 flex items-center justify-center gap-1">
+              <Trophy className="w-3 h-3" /> أفضل وقت: {bestTime} ثانية
+            </p>
+          )}
         </div>
       )}
 
@@ -354,10 +404,10 @@ function LetterGame({ unit, lang, onSpeak, onBack }: {
                 ${!isMatched && !isSelected && !isWrong ? 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm' : ''}
               `}
             >
-              <div className={`text-xl md:text-2xl font-bold mb-0.5 ${card.isChar ? 'text-slate-800' : 'text-teal-700'} break-all`}>
+              <div className={`${fc.char} font-bold mb-0.5 ${card.isChar ? 'text-slate-800' : 'text-teal-700'} break-all`}>
                 {card.text}
               </div>
-              <div className="text-xs text-slate-400">{card.subtext}</div>
+              <div className={`${fc.roman} text-slate-400`}>{card.subtext}</div>
             </div>
           );
         })}
