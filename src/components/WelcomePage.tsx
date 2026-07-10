@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Languages, ArrowRight, Sparkles, Globe } from 'lucide-react';
+import { ArrowRight, Sparkles, Globe } from 'lucide-react';
 import type { LearnLang, NativeLang } from '../data/i18n';
 import { getUi, langFlag, nativeLangFlag, nativeLangLabel } from '../data/i18n';
 
@@ -38,11 +38,15 @@ export default function WelcomePage({ nativeLang, onSelectNative, onSelectLearn 
         <div className="max-w-2xl w-full">
           <div className="text-center mb-8 animate-[fadeIn_0.6s_ease-out]">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-teal-500 to-teal-700 mb-5 shadow-xl shadow-teal-200">
-              <Globe className="w-10 h-10 text-white" />
+              <span className="text-5xl">🦊</span>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">
-              Choose Your Language / Choisissez votre langue / اختر لغتك
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent mb-2">
+              Bibish Languages
             </h1>
+            <p className="text-sm text-slate-400 mb-3">🐾</p>
+            <h2 className="text-lg font-semibold text-slate-700 mb-1">
+              Choose Your Language / Choisissez votre langue / اختر لغتك
+            </h2>
             <p className="text-sm text-slate-400">
               Select your native language to continue
             </p>
@@ -112,11 +116,12 @@ export default function WelcomePage({ nativeLang, onSelectNative, onSelectLearn 
       <div className="max-w-3xl w-full">
         <div className="text-center mb-8 animate-[fadeIn_0.6s_ease-out]">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-teal-500 to-teal-700 mb-5 shadow-xl shadow-teal-200">
-            <Languages className="w-10 h-10 text-white" />
+            <span className="text-5xl">🦊</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">
-            {t.welcome}
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent mb-2">
+            Bibish Languages
           </h1>
+          <p className="text-sm text-slate-400 mb-3">🐾</p>
           <p className="text-lg text-slate-600 font-medium mb-1">
             {t.chooseLang}
           </p>

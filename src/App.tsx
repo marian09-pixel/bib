@@ -83,11 +83,12 @@ export default function App() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-teal-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center">
               <Star className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-lg font-bold text-slate-800">{t.appTitle}</h1>
-            <span className="text-xl">{langFlag[learnLang]}</span>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent">Bibish Languages</h1>
+            <span className="text-base">🦊</span>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">{langFlag[learnLang]} {t.targetLangName}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative">
