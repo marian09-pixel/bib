@@ -8,7 +8,7 @@ import FoxMascot from './components/FoxMascot';
 import { initVoices } from './hooks/useSpeech';
 import { useSettings, type FontSize } from './hooks/useSettings';
 
-const ALL_LANGS: LearnLang[] = ['ru', 'en', 'ja', 'zh', 'ko', 'fr', 'es'];
+const ALL_LANGS: LearnLang[] = ['ru', 'en', 'ja', 'zh', 'ko', 'fr', 'es', 'tr'];
 const NATIVE_KEY = 'learnlang_native';
 const LEARN_KEY = 'learnlang_choice';
 
@@ -196,6 +196,7 @@ export default function App() {
       <FoxMascot lang={learnLang} message={
         learnLang === 'fr' ? "Bonjour! Je suis votre renard intelligent. Apprenons ensemble!" :
         learnLang === 'es' ? "¡Hola! Soy tu zorro inteligente. ¡Aprendamos juntos!" :
+        learnLang === 'tr' ? "Merhaba! Ben akıllı tilkiniz. Birlikte öğrenelim!" :
         "مرحباً! أنا ثعلبك الذكي. تعال نتعلم معاً!"
       } />
     </div>

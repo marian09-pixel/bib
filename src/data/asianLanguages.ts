@@ -3,6 +3,7 @@ import { levels as levelsRu, type Level } from './vocabulary';
 import { levelsEn } from './vocabularyEn';
 import { levelsFr } from './vocabularyFr';
 import { levelsEs } from './vocabularyEs';
+import { levelsTr } from './vocabularyTr';
 
 export interface AsianPair {
   id: string;
@@ -1455,6 +1456,7 @@ export function getAsianData(lang: LearnLang): AsianLanguageData | null {
   if (lang === 'en') return convertLevelsToData('en', levelsEn);
   if (lang === 'fr') return convertLevelsToData('fr', levelsFr);
   if (lang === 'es') return convertLevelsToData('es', levelsEs);
+  if (lang === 'tr') return convertLevelsToData('tr', levelsTr);
   return null;
 }
 

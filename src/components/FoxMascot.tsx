@@ -75,6 +75,7 @@ export default function FoxMascot({ lang, message, className = '' }: FoxMascotPr
           {lang === 'ko' && <Hanbok />}
           {lang === 'fr' && <Beret />}
           {lang === 'es' && <Sombrero />}
+          {lang === 'tr' && <Fez />}
         </svg>
 
         {/* Noodle bowl for Korean */}
@@ -95,6 +96,13 @@ export default function FoxMascot({ lang, message, className = '' }: FoxMascotPr
         {lang === 'es' && (
           <div className="absolute -right-1 bottom-2 text-2xl select-none" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))' }}>
             🌮
+          </div>
+        )}
+
+        {/* Turkish tea for Turkish */}
+        {lang === 'tr' && (
+          <div className="absolute -right-1 bottom-2 text-2xl select-none" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))' }}>
+            🍵
           </div>
         )}
       </div>
@@ -285,6 +293,35 @@ function Sombrero() {
 
       {/* Top bump */}
       <ellipse cx="60" cy="32" rx="4" ry="3" fill="#D4A574" />
+    </g>
+  );
+}
+
+// ===== Fez (Traditional Turkish Hat) =====
+function Fez() {
+  return (
+    <g>
+      {/* Main fez body — cylindrical red hat */}
+      <path d="M 42 50 L 42 34 Q 42 28 60 28 Q 78 28 78 34 L 78 50 Z" fill="#C1121F" />
+      {/* Fez top (flat circle) */}
+      <ellipse cx="60" cy="34" rx="18" ry="5" fill="#A00D17" />
+      {/* Fez brim/bottom */}
+      <ellipse cx="60" cy="50" rx="18" ry="3" fill="#8B0A12" opacity="0.7" />
+      {/* Gold tassel attachment on top */}
+      <circle cx="60" cy="30" r="2" fill="#D4AF37" />
+      {/* Gold tassel cord */}
+      <path d="M 60 28 Q 68 24 72 26" stroke="#D4AF37" stroke-width="1.5" fill="none" />
+      {/* Gold tassel fringe */}
+      <line x1="72" y1="26" x2="74" y2="30" stroke="#D4AF37" stroke-width="1.2" />
+      <line x1="72" y1="26" x2="76" y2="29" stroke="#D4AF37" stroke-width="1.2" />
+      <line x1="72" y1="26" x2="73" y2="31" stroke="#D4AF37" stroke-width="1.2" />
+      <line x1="72" y1="26" x2="77" y2="28" stroke="#D4AF37" stroke-width="1.2" />
+      <line x1="72" y1="26" x2="75" y2="32" stroke="#D4AF37" stroke-width="1.2" />
+      {/* Decorative gold band */}
+      <rect x="42" y="46" width="36" height="3" fill="#D4AF37" opacity="0.85" />
+      <rect x="42" y="46" width="36" height="1" fill="#FFD700" opacity="0.9" />
+      {/* Subtle highlight on fez body */}
+      <path d="M 45 48 L 45 36 Q 45 31 55 30" stroke="#E63946" stroke-width="1.5" fill="none" opacity="0.6" />
     </g>
   );
 }

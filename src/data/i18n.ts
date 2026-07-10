@@ -1,4 +1,4 @@
-export type LearnLang = 'ru' | 'en' | 'ja' | 'zh' | 'ko' | 'fr' | 'es';
+export type LearnLang = 'ru' | 'en' | 'ja' | 'zh' | 'ko' | 'fr' | 'es' | 'tr';
 export type NativeLang = 'ar' | 'fr' | 'en' | 'ru';
 
 export interface UIStrings {
@@ -45,6 +45,8 @@ export interface UIStrings {
   koreanDesc: string;
   frenchDesc: string;
   spanishDesc: string;
+  turkish: string;
+  turkishDesc: string;
   start: string;
   targetLangName: string;
   letters: string;
@@ -106,6 +108,8 @@ const arStrings: UIStrings = {
   japaneseDesc: 'تعلم اليابانية بطريقة تفاعلية ممتعة', chineseDesc: 'تعلم الصينية بطريقة تفاعلية ممتعة',
   koreanDesc: 'تعلم الكورية بطريقة تفاعلية ممتعة', frenchDesc: 'تعلم الفرنسية بطريقة تفاعلية ممتعة',
   spanishDesc: 'تعلم الإسبانية بطريقة تفاعلية ممتعة',
+  turkish: 'اللغة التركية',
+  turkishDesc: 'تعلم التركية بطريقة تفاعلية ممتعة',
   start: 'ابدأ التعلم', targetLangName: '',
   letters: 'الحروف الأساسية', lettersDesc: 'تعلّم الحروف بالنطق واللعب',
   greetings: 'التحية والجمل اليومية', greetingsDesc: 'كلمات شائعة مترجمة للعربية',
@@ -140,6 +144,8 @@ const frStrings: UIStrings = {
   japaneseDesc: 'Apprenez le japonais de manière interactive', chineseDesc: 'Apprenez le chinois de manière interactive',
   koreanDesc: 'Apprenez le coréen de manière interactive', frenchDesc: 'Apprenez le français de manière interactive',
   spanishDesc: 'Apprenez l\'espagnol de manière interactive',
+  turkish: 'Turc',
+  turkishDesc: 'Apprenez le turc de manière interactive',
   start: 'Commencer', targetLangName: '',
   letters: 'Lettres de base', lettersDesc: 'Apprenez les lettres avec le son',
   greetings: 'Salutations', greetingsDesc: 'Phrases courantes traduites',
@@ -174,6 +180,8 @@ const enStrings: UIStrings = {
   japaneseDesc: 'Learn Japanese interactively', chineseDesc: 'Learn Chinese interactively',
   koreanDesc: 'Learn Korean interactively', frenchDesc: 'Learn French interactively',
   spanishDesc: 'Learn Spanish interactively',
+  turkish: 'Turkish',
+  turkishDesc: 'Learn Turkish interactively',
   start: 'Start learning', targetLangName: '',
   letters: 'Basic Letters', lettersDesc: 'Learn letters with sound',
   greetings: 'Greetings', greetingsDesc: 'Common phrases translated',
@@ -208,6 +216,8 @@ const ruStrings: UIStrings = {
   japaneseDesc: 'Учите японский интерактивно', chineseDesc: 'Учите китайский интерактивно',
   koreanDesc: 'Учите корейский интерактивно', frenchDesc: 'Учите французский интерактивно',
   spanishDesc: 'Учите испанский интерактивно',
+  turkish: 'Турецкий',
+  turkishDesc: 'Учите турецкий интерактивно',
   start: 'Начать', targetLangName: '',
   letters: 'Базовые буквы', lettersDesc: 'Учите буквы со звуком',
   greetings: 'Приветствия', greetingsDesc: 'Общие фразы с переводом',
@@ -254,6 +264,7 @@ function learnLangOverrides(lang: LearnLang, native: NativeLang): Pick<UIStrings
     ko: { ar: 'تعلم الكورية', fr: 'Apprendre le coréen', en: 'Learn Korean' },
     fr: { ar: 'تعلم الفرنسية', fr: 'Apprendre le français', en: 'Learn French' },
     es: { ar: 'تعلم الإسبانية', fr: 'Apprendre l\'espagnol', en: 'Learn Spanish' },
+    tr: { ar: 'تعلم التركية', fr: 'Apprendre le turc', en: 'Learn Turkish' },
   };
   const n = names[lang][native];
   const descAr = `اربط الكلمات بمعانيها`;
@@ -284,12 +295,13 @@ export const ui: Record<LearnLang, UIStrings> = {
   ko: { ...arStrings, ...learnLangOverrides('ko', 'ar') },
   fr: { ...arStrings, ...learnLangOverrides('fr', 'ar') },
   es: { ...arStrings, ...learnLangOverrides('es', 'ar') },
+  tr: { ...arStrings, ...learnLangOverrides('tr', 'ar') },
 };
 
 export const langFlag: Record<LearnLang, string> = {
-  ru: '🇷🇺', en: '🇬🇧', ja: '🇯🇵', zh: '🇨🇳', ko: '🇰🇷', fr: '🇫🇷', es: '🇲🇽',
+  ru: '🇷🇺', en: '🇬🇧', ja: '🇯🇵', zh: '🇨🇳', ko: '🇰🇷', fr: '🇫🇷', es: '🇲🇽', tr: '🇹🇷',
 };
 
 export const langSpeechCode: Record<LearnLang, string> = {
-  ru: 'ru-RU', en: 'en-US', ja: 'ja-JP', zh: 'zh-CN', ko: 'ko-KR', fr: 'fr-FR', es: 'es-MX',
+  ru: 'ru-RU', en: 'en-US', ja: 'ja-JP', zh: 'zh-CN', ko: 'ko-KR', fr: 'fr-FR', es: 'es-MX', tr: 'tr-TR',
 };

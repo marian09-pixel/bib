@@ -102,11 +102,13 @@ export default function WelcomePage({ nativeLang, onSelectNative, onSelectLearn 
     { id: 'zh', label: t.chinese, desc: t.chineseDesc, flag: langFlag.zh,
       accentBg: 'bg-amber-100', accentText: 'text-amber-600', accentBorder: 'border-amber-500', accentShadow: 'shadow-amber-200' },
     { id: 'ko', label: t.korean, desc: t.koreanDesc, flag: langFlag.ko,
-      accentBg: 'bg-indigo-100', accentText: 'text-indigo-600', accentBorder: 'border-indigo-500', accentShadow: 'shadow-indigo-200' },
+      accentBg: 'bg-violet-100', accentText: 'text-violet-600', accentBorder: 'border-violet-500', accentShadow: 'shadow-violet-200' },
     { id: 'fr', label: t.french, desc: t.frenchDesc, flag: langFlag.fr,
       accentBg: 'bg-rose-100', accentText: 'text-rose-600', accentBorder: 'border-rose-500', accentShadow: 'shadow-rose-200' },
     { id: 'es', label: t.spanish, desc: t.spanishDesc, flag: langFlag.es,
       accentBg: 'bg-orange-100', accentText: 'text-orange-600', accentBorder: 'border-orange-500', accentShadow: 'shadow-orange-200' },
+    { id: 'tr', label: t.turkish, desc: t.turkishDesc, flag: langFlag.tr,
+      accentBg: 'bg-red-100', accentText: 'text-red-600', accentBorder: 'border-red-500', accentShadow: 'shadow-red-200' },
   ];
 
   const isRtl = nativeLang === 'ar';
@@ -171,7 +173,7 @@ export default function WelcomePage({ nativeLang, onSelectNative, onSelectLearn 
         <div className="flex items-center justify-center flex-wrap gap-4 md:gap-6 mt-8 text-xs text-slate-400">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>{t.languagesCount}</span>
+            <span>{nativeLang === 'fr' ? '8 langues' : nativeLang === 'en' ? '8 languages' : '8 لغات'}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
